@@ -1,0 +1,592 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   WINDOWS VISTA AERO GLASS THEME
+   ============================================ */
+
+/* Vista Glass Window */
+.win {
+  @apply pointer-events-auto select-none;
+  background: linear-gradient(180deg, 
+    rgba(200, 220, 245, 0.92) 0%, 
+    rgba(240, 245, 250, 0.95) 2%,
+    rgba(255, 255, 255, 0.97) 100%
+  );
+  border: 1px solid rgba(50, 100, 150, 0.6);
+  border-radius: 8px 8px 4px 4px;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Vista Glass Title Bar */
+.win-titlebar {
+  background: linear-gradient(180deg,
+    rgba(140, 185, 240, 0.98) 0%,
+    rgba(90, 145, 210, 0.95) 40%,
+    rgba(60, 115, 185, 0.97) 45%,
+    rgba(70, 125, 195, 0.95) 100%
+  );
+  border-bottom: 1px solid rgba(50, 90, 140, 0.5);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(0, 50, 100, 0.2);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 30, 80, 0.5);
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  user-select: none;
+  cursor: move;
+  border-radius: 7px 7px 0 0;
+}
+
+/* Title bar icon area */
+.win-titlebar .title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.win-titlebar .title::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #4a90d9 0%, #1e5aa8 100%);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Vista Window Action Buttons */
+.win-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.win-actions button {
+  width: 26px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: bold;
+  border: 1px solid rgba(0, 50, 100, 0.4);
+  transition: all 0.1s ease;
+  color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Minimize button */
+.win-actions button[data-act="min"] {
+  background: linear-gradient(180deg,
+    rgba(180, 200, 230, 0.9) 0%,
+    rgba(120, 150, 190, 0.85) 50%,
+    rgba(100, 130, 170, 0.9) 100%
+  );
+}
+
+.win-actions button[data-act="min"]:hover {
+  background: linear-gradient(180deg,
+    rgba(200, 220, 250, 0.95) 0%,
+    rgba(150, 180, 220, 0.9) 50%,
+    rgba(130, 160, 200, 0.95) 100%
+  );
+  box-shadow: 0 0 8px rgba(150, 200, 255, 0.5);
+}
+
+/* Maximize button */
+.win-actions button[data-act="max"] {
+  background: linear-gradient(180deg,
+    rgba(180, 200, 230, 0.9) 0%,
+    rgba(120, 150, 190, 0.85) 50%,
+    rgba(100, 130, 170, 0.9) 100%
+  );
+}
+
+.win-actions button[data-act="max"]:hover {
+  background: linear-gradient(180deg,
+    rgba(200, 220, 250, 0.95) 0%,
+    rgba(150, 180, 220, 0.9) 50%,
+    rgba(130, 160, 200, 0.95) 100%
+  );
+  box-shadow: 0 0 8px rgba(150, 200, 255, 0.5);
+}
+
+/* Close button - Vista red */
+.win-actions button[data-act="close"] {
+  background: linear-gradient(180deg,
+    rgba(230, 120, 120, 0.95) 0%,
+    rgba(200, 70, 70, 0.9) 50%,
+    rgba(170, 50, 50, 0.95) 100%
+  );
+  border-color: rgba(100, 30, 30, 0.5);
+}
+
+.win-actions button[data-act="close"]:hover {
+  background: linear-gradient(180deg,
+    rgba(255, 140, 140, 1) 0%,
+    rgba(230, 90, 90, 0.95) 50%,
+    rgba(200, 70, 70, 1) 100%
+  );
+  box-shadow: 0 0 10px rgba(255, 100, 100, 0.6);
+}
+
+.win-actions button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Window body */
+.win-body {
+  padding: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+/* ============================================
+   DESKTOP ICONS - Vista Style
+   ============================================ */
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  text-shadow: 
+    1px 1px 2px rgba(0, 0, 0, 0.8),
+    -1px -1px 2px rgba(0, 0, 0, 0.8),
+    1px -1px 2px rgba(0, 0, 0, 0.8),
+    -1px 1px 2px rgba(0, 0, 0, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.desktop-icon:hover {
+  background: rgba(100, 160, 220, 0.35);
+  border: 1px solid rgba(150, 200, 255, 0.5);
+  margin: -1px;
+}
+
+.desktop-icon:active {
+  background: rgba(80, 140, 200, 0.5);
+}
+
+.desktop-icon svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* ============================================
+   TASKBAR - Vista Aero Glass
+   ============================================ */
+
+#taskbar {
+  background: linear-gradient(180deg,
+    rgba(40, 60, 90, 0.85) 0%,
+    rgba(25, 45, 75, 0.92) 20%,
+    rgba(15, 30, 55, 0.95) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(120, 160, 200, 0.4);
+  box-shadow: 
+    inset 0 1px 0 rgba(150, 190, 230, 0.3),
+    0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Vista Start Button (Green Orb Style) */
+#start-btn {
+  background: radial-gradient(ellipse at 50% 20%,
+    #7ed95a 0%,
+    #51b82e 30%,
+    #3a9921 60%,
+    #2d7a19 100%
+  );
+  border: 1px solid rgba(30, 80, 20, 0.6);
+  border-radius: 4px;
+  padding: 4px 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  text-shadow: 0 -1px 0 rgba(0, 50, 0, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 50, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#start-btn:hover {
+  background: radial-gradient(ellipse at 50% 20%,
+    #98f070 0%,
+    #65d040 30%,
+    #4ab82e 60%,
+    #3a9921 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(0, 50, 0, 0.2),
+    0 0 15px rgba(100, 200, 80, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+#start-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 50, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Start button Windows logo */
+#start-btn .start-logo {
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, 
+    #ff6b35 25%, #f7931a 25%, #f7931a 50%,
+    #00a8e8 50%, #00a8e8 75%, #7ed95a 75%
+  );
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Taskbar Items */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 3px;
+  background: linear-gradient(180deg,
+    rgba(80, 120, 170, 0.5) 0%,
+    rgba(50, 80, 120, 0.4) 100%
+  );
+  border: 1px solid rgba(100, 150, 200, 0.3);
+  color: white;
+  font-size: 12px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.15s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.task-item:hover {
+  background: linear-gradient(180deg,
+    rgba(100, 150, 200, 0.6) 0%,
+    rgba(70, 110, 160, 0.5) 100%
+  );
+  border-color: rgba(150, 200, 255, 0.4);
+}
+
+.task-item.active {
+  background: linear-gradient(180deg,
+    rgba(120, 170, 220, 0.7) 0%,
+    rgba(80, 130, 180, 0.6) 50%,
+    rgba(60, 110, 160, 0.7) 100%
+  );
+  border-color: rgba(150, 200, 255, 0.6);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 8px rgba(100, 180, 255, 0.3);
+}
+
+/* System tray clock */
+#clock {
+  font-size: 12px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   START MENU - Vista Glass Style
+   ============================================ */
+
+#start-menu {
+  background: linear-gradient(180deg,
+    rgba(50, 80, 120, 0.95) 0%,
+    rgba(30, 55, 90, 0.97) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 150, 200, 0.5);
+  border-radius: 6px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(150, 200, 255, 0.3);
+  overflow: hidden;
+}
+
+#start-menu .bg-xp-titlebar,
+#start-menu > div:first-child {
+  background: linear-gradient(180deg,
+    rgba(80, 130, 190, 0.9) 0%,
+    rgba(50, 90, 140, 0.85) 100%
+  );
+  border-bottom: 1px solid rgba(100, 150, 200, 0.4);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 30, 80, 0.5);
+}
+
+#start-menu ul {
+  padding: 8px;
+}
+
+#start-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 3px;
+  color: white;
+  font-size: 12px;
+  transition: all 0.1s ease;
+}
+
+#start-menu button:hover {
+  background: linear-gradient(180deg,
+    rgba(100, 150, 210, 0.6) 0%,
+    rgba(70, 120, 180, 0.5) 100%
+  );
+}
+
+/* ============================================
+   FILE EXPLORER & CARDS - Vista Style
+   ============================================ */
+
+.file-list-item {
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  border: 1px solid transparent;
+}
+
+.file-list-item:hover {
+  background: linear-gradient(180deg,
+    rgba(200, 220, 240, 0.8) 0%,
+    rgba(180, 200, 230, 0.6) 100%
+  );
+  border-color: rgba(100, 150, 200, 0.5);
+}
+
+.file-list-item.selected {
+  background: linear-gradient(180deg,
+    rgba(150, 190, 230, 0.9) 0%,
+    rgba(120, 160, 210, 0.8) 100%
+  );
+  border-color: rgba(80, 130, 190, 0.6);
+}
+
+.forum-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+  border: 1px solid rgba(100, 130, 170, 0.3);
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Vista-style badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  background: linear-gradient(180deg,
+    rgba(220, 235, 250, 0.9) 0%,
+    rgba(190, 210, 235, 0.8) 100%
+  );
+  border: 1px solid rgba(100, 140, 190, 0.4);
+  color: #2c5282;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Vista-style buttons */
+.vista-btn,
+button.px-3 {
+  background: linear-gradient(180deg,
+    #f7f7f7 0%,
+    #e9e9e9 40%,
+    #d8d8d8 45%,
+    #e5e5e5 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.5);
+  border-radius: 3px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: #222;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.1s ease;
+}
+
+.vista-btn:hover,
+button.px-3:hover {
+  background: linear-gradient(180deg,
+    #fdfeff 0%,
+    #e4f0fc 40%,
+    #c4dcf4 45%,
+    #d8ebf9 100%
+  );
+  border-color: rgba(100, 150, 200, 0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 0 6px rgba(100, 180, 255, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.vista-btn:active,
+button.px-3:active {
+  background: linear-gradient(180deg,
+    #d0e0f0 0%,
+    #a8c8e8 40%,
+    #88b8e0 45%,
+    #a0c8e8 100%
+  );
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   CONTEXT MENU - Vista Style
+   ============================================ */
+
+.menu {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(245, 248, 252, 0.95) 100%
+  );
+  border: 1px solid rgba(100, 130, 170, 0.5);
+  border-radius: 4px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  padding: 4px 0;
+}
+
+.menu-item {
+  padding: 6px 24px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #222;
+  transition: all 0.1s ease;
+}
+
+.menu-item:hover {
+  background: linear-gradient(180deg,
+    rgba(150, 190, 230, 0.8) 0%,
+    rgba(120, 160, 210, 0.6) 100%
+  );
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 30, 80, 0.3);
+}
+
+/* ============================================
+   TOOLTIP - Vista Style
+   ============================================ */
+
+.tooltip {
+  position: absolute;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 230, 0.98) 0%,
+    rgba(255, 250, 205, 0.95) 100%
+  );
+  color: #333;
+  padding: 6px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+  border: 1px solid rgba(180, 160, 100, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+/* ============================================
+   SCROLLBAR - Vista Style
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #e8e8e8 0%, #f5f5f5 100%);
+  border: 1px solid #ccc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,
+    #c0c0c0 0%,
+    #a0a0a0 50%,
+    #909090 100%
+  );
+  border: 1px solid #888;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg,
+    #b0d0f0 0%,
+    #80b0e0 50%,
+    #60a0d0 100%
+  );
+  border-color: #5090c0;
+}
+
+::-webkit-scrollbar-button {
+  background: linear-gradient(180deg, #f0f0f0 0%, #d8d8d8 100%);
+  border: 1px solid #aaa;
+  height: 14px;
+}
+
+/* ============================================
+   VISTA AURORA WALLPAPER EFFECT
+   ============================================ */
+
+#wallpaper.vista-aurora {
+  background: 
+    radial-gradient(ellipse at 20% 80%, rgba(50, 200, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 70%, rgba(100, 220, 255, 0.1) 0%, transparent 35%),
+    radial-gradient(ellipse at 60% 100%, rgba(80, 180, 240, 0.2) 0%, transparent 45%),
+    linear-gradient(180deg, #0a1628 0%, #132a4a 40%, #1a4068 70%, #0d2a4a 100%);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Glass panel effect */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+/* Aero glow effect */
+.aero-glow {
+  box-shadow: 0 0 20px rgba(100, 180, 255, 0.4);
+}
+
+/* Selection highlight */
+::selection {
+  background: rgba(100, 150, 220, 0.4);
+}
