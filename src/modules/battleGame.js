@@ -45,7 +45,11 @@ function mapFrames(map, cache) {
   return result
 }
 
-export function createBattleGame() {
+export function createBattleGame(options = {}) {
+  const {
+    mode = 'window',
+    onComputerInteract = null
+  } = options
   const container = document.createElement('div')
   container.style.cssText = 'height:100%;background:#0b1524;display:flex;flex-direction:column;gap:8px;padding:8px;font-family:Segoe UI'
 
@@ -67,22 +71,38 @@ export function createBattleGame() {
     <div>Sprites live in <code>/public/game_assets</code>. Drop new PNGs there and reference them in <code>battleGame.js</code>.</div>
   `
 
+  if (mode !== 'window') {
+    container.style.border = 'none'
+    container.style.borderRadius = '0'
+    container.style.padding = '0'
+    container.style.width = 'auto'
+    container.style.height = 'auto'
+    container.style.boxSizing = 'border-box'
+    container.style.alignItems = 'center'
+  }
+
   container.append(canvas, info)
 
-  const win = makeWindow({
-    title: 'Battle.exe',
-    body: container,
-    width: BASE_WIDTH * 1.5 + 80,
-    height: BASE_HEIGHT * 1.5 + 160,
-    icon: `<svg viewBox="0 0 32 32" class="w-8 h-8">
-      <rect x="4" y="4" width="24" height="24" rx="5" fill="#f8c146" stroke="#b46a00" stroke-width="1.2"/>
-      <path d="M11 10h10M11 16h10M11 22h5" stroke="#5a2d00" stroke-width="2.2" stroke-linecap="round"/>
-    </svg>`
-  })
+  let hostElement
+  if (mode === 'window') {
+    hostElement = makeWindow({
+      title: 'Battle.exe',
+      body: container,
+      width: BASE_WIDTH * 1.5 + 80,
+      height: BASE_HEIGHT * 1.5 + 160,
+      icon: `<svg viewBox="0 0 32 32" class="w-8 h-8">
+        <rect x="4" y="4" width="24" height="24" rx="5" fill="#f8c146" stroke="#b46a00" stroke-width="1.2"/>
+        <path d="M11 10h10M11 16h10M11 22h5" stroke="#5a2d00" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>`
+    })
+  } else {
+    hostElement = container
+  }
 
   const ctx = canvas.getContext('2d')
 
-  let backgroundImage = null
+  const backgroundCache = new Map()
+  let currentBackground = null
   let walkFrames = null
   let runFrames = null
   let assetsLoaded = false
@@ -90,49 +110,171 @@ export function createBattleGame() {
   const player = {
     x: BASE_WIDTH / 2,
     y: BASE_HEIGHT / 2 + 40,
-  width: 24,
-  height: 30,
+    width: 24,
+    height: 30,
+    renderWidth: null,
+    renderHeight: null,
     direction: 'down',
     frameIndex: 1,
     frameTime: 0,
     walkSpeed: 95,
-  runSpeed: 160,
-  lastDoor: null
+    runSpeed: 160,
+    lastZoneId: null
   }
 
-const collisionRects = [
-  { x: 0, y: 0, width: 120, height: 160 },
-  { x: 180, y: 80, width: 20, height: 28 },
-  { x: 120, y: 72, width: 45, height: 26 },
-  { x: 150, y: 108, width: 13, height: 28 },
-  { x: 116, y: 130, width: 16, height: 14 },
-  { x: 200, y: 0, width: 46, height: 132 },
-  { x: 280, y: 0, width: 213, height: 100 },
-  { x: 330, y: 100, width: 15, height: 73 },
-  { x: 377, y: 60, width: 116, height: 104 },
-  { x: 0, y: 0, width: 120, height: 160 },
-  { x: 424, y: 160, width: 68, height: 25 },
-  { x: 452, y: 185, width: 41, height: 55 },
-  { x: 400, y: 240, width: 93, height: 156 },
-  { x: 0, y: 360, width: 400, height: 36 },
-  { x: 0, y: 340, width: 156, height: 20 },
-  { x: 0, y: 240, width: 20, height: 100 },
-  { x: 20, y: 240, width: 60, height: 60 },
-  { x: 200, y: 213, width: 15, height: 7 },
-  { x: 90, y: 220, width: 13, height: 60 },
-  { x: 120, y: 220, width: 31, height: 56 },
-  { x: 0, y: 0, width: 120, height: 160 },
-  { x: 260, y: 240, width: 75, height: 45 },
-  { x: 248, y: 278, width: 14, height: 28 },
-  { x: 240, y: 0, width: 26, height: 70 }
-]
+  const OUTSIDE_COLLISIONS = [
+    { x: 0, y: 0, width: 120, height: 160 },
+    { x: 180, y: 80, width: 20, height: 28 },
+    { x: 120, y: 72, width: 45, height: 26 },
+    { x: 150, y: 108, width: 13, height: 28 },
+    { x: 116, y: 130, width: 16, height: 14 },
+    { x: 200, y: 0, width: 46, height: 132 },
+    { x: 280, y: 0, width: 213, height: 100 },
+    { x: 330, y: 100, width: 15, height: 73 },
+    { x: 385, y: 60, width: 116, height: 104 },
+    { x: 0, y: 0, width: 120, height: 160 },
+    { x: 424, y: 160, width: 68, height: 25 },
+    { x: 452, y: 185, width: 41, height: 55 },
+    { x: 400, y: 240, width: 93, height: 156 },
+    { x: 0, y: 360, width: 400, height: 36 },
+    { x: 0, y: 340, width: 156, height: 20 },
+    { x: 0, y: 240, width: 20, height: 100 },
+    { x: 20, y: 240, width: 60, height: 60 },
+    { x: 200, y: 213, width: 15, height: 7 },
+    { x: 90, y: 220, width: 13, height: 60 },
+    { x: 120, y: 220, width: 31, height: 56 },
+    { x: 0, y: 0, width: 120, height: 160 },
+    { x: 260, y: 240, width: 75, height: 45 },
+    { x: 248, y: 278, width: 14, height: 28 },
+    { x: 240, y: 0, width: 26, height: 70 }
+  ]
 
-const doorways = [
-  { name: 'Professor Elm Lab', x: 180, y: 116, width: 20, height: 10 },
-  { name: "Player's Home", x: 357, y: 145, width: 20, height: 10 },
-  { name: "Rival's House", x: 278, y: 284, width: 20, height: 10 },
-  { name: 'Guest House', x: 102, y: 270, width: 20, height: 10 }
-]
+  const DOWNSTAIRS_COLLISIONS = [
+    { x: 0, y: 0, width: 494, height: 70 },
+    { x: 0, y: 70, width: 16, height: 327 },
+    { x: 0, y: 364, width: 20, height: 55 },
+    { x: 453, y: 146, width: 41, height: 41 },
+    { x: 284, y: 50, width: 41, height: 120 },
+    { x: 288, y: 216, width: 77, height: 70 },
+    { x: 0, y: 100, width: 114, height: 30 }
+  ]
+
+  const UPSTAIRS_COLLISIONS = [
+    { x: 85, y: 157, width: 55, height: 17 },
+    { x: 0, y: 0, width: 494, height: 119 },
+    { x: 268, y: 106, width: 121, height: 48 },
+    { x: 390, y: 0, width: 104, height: 397 },
+    { x: 0, y: 317, width: 494, height: 81 },
+    { x: 0, y: 0, width: 80, height: 397 },
+    { x: 103, y: 233, width: 47, height: 75 },
+    { x: 358, y: 282, width: 28, height: 27 }
+  ]
+
+  const OUTSIDE_HOME_RETURN_SPAWN = { x: 367, y: 170 }
+
+  const AREA_CONFIG = {
+    outside: {
+      backgroundSrc: '/game_assets/New_Bark_Town_HGSS.png',
+      playerSize: { width: 24, height: 30 },
+      collisionRects: OUTSIDE_COLLISIONS,
+      zones: [
+        {
+          id: 'professor-elm',
+          type: 'message',
+          name: 'Professor Elm Lab',
+          rect: { x: 180, y: 116, width: 20, height: 10 },
+          message: 'Professor Elm is still getting the lab ready. Check back soon!'
+        },
+        {
+          id: 'players-home-entry',
+          type: 'transition',
+          name: "Player's Home",
+          rect: { x: 357, y: 145, width: 20, height: 10 },
+          target: 'downstairs',
+          targetSpawn: { x: 141, y: 400 }
+        },
+        {
+          id: 'rival-house',
+          type: 'message',
+          name: "Rival's House",
+          rect: { x: 278, y: 284, width: 20, height: 10 },
+          message: "Rival's House is in progress. Check back soon!"
+        },
+        {
+          id: 'guest-house',
+          type: 'message',
+          name: 'Guest House',
+          rect: { x: 102, y: 270, width: 20, height: 10 },
+          message: 'The guest house is being decorated right now.'
+        }
+      ],
+      clickZones: []
+    },
+    downstairs: {
+      backgroundSrc: '/game_assets/ethan_downstairs.png',
+      playerSize: { width: 32, height: 48 },
+      collisionRects: DOWNSTAIRS_COLLISIONS,
+      renderSize: { width: 32, height: 48 },
+      zones: [
+        {
+          id: 'downstairs-to-outside',
+          type: 'transition',
+          name: 'Outside',
+          rect: { x: 102, y: 316, width: 75, height: 57 },
+          target: 'outside',
+          targetSpawn: OUTSIDE_HOME_RETURN_SPAWN
+        },
+        {
+          id: 'downstairs-to-upstairs',
+          type: 'transition',
+          name: 'Upstairs',
+          rect: { x: 117, y: 71, width: 66, height: 65 },
+          target: 'upstairs',
+          targetSpawn: { x: 191, y: 154 }
+        }
+      ],
+      clickZones: []
+    },
+    upstairs: {
+      backgroundSrc: '/game_assets/ethan_room.png',
+      playerSize: { width: 32, height: 48 },
+      collisionRects: UPSTAIRS_COLLISIONS,
+      renderSize: { width: 32, height: 48 },
+      zones: [
+        {
+          id: 'upstairs-to-downstairs',
+          type: 'transition',
+          name: 'Downstairs',
+          rect: { x: 138, y: 120, width: 20, height: 55 },
+          target: 'downstairs',
+          targetSpawn: { x: 178, y: 112 }
+        }
+      ],
+      clickZones: [
+        {
+          id: 'upstairs-computer',
+          rect: { x: 235, y: 115, width: 60, height: 62 },
+          onInteract: () => {
+            if (typeof onComputerInteract === 'function') {
+              onComputerInteract()
+            } else {
+              alert('The computer hums quietly. Nothing new to check right now.')
+            }
+          },
+          message: 'The computer hums quietly. Nothing new to check right now.'
+        }
+      ]
+    }
+  }
+
+  const BACKGROUND_SOURCES = Array.from(
+    new Set(Object.values(AREA_CONFIG).map(area => area.backgroundSrc))
+  )
+
+  let currentAreaKey = 'outside'
+  let currentArea = AREA_CONFIG[currentAreaKey]
+  let transitionCooldown = 0
+  let transitionHoldActive = false
 
   const keys = new Set()
   const controls = {
@@ -159,21 +301,72 @@ function blockedAt(nx, ny) {
     width: player.width,
     height: player.height
   }
-  return collisionRects.some(rect => rectsOverlap(footprint, rect))
+  const collisionSet = currentArea?.collisionRects || []
+  return collisionSet.some(rect => rectsOverlap(footprint, rect))
 }
 
-function doorwayAt(nx, ny) {
+function zoneAt(nx, ny) {
   const footprint = {
     x: nx - player.width / 2,
     y: ny - player.height / 2,
     width: player.width,
     height: player.height
   }
-  return doorways.find(rect => rectsOverlap(footprint, rect))
+  const zones = currentArea?.zones || []
+  return zones.find(zone => rectsOverlap(footprint, zone.rect))
 }
 
-function showDoorwayPopup(name) {
-  alert(`${name} is in progress. Check back soon!`)
+function showZoneMessage(zone) {
+  const text = zone.message || `${zone.name} is in progress. Check back soon!`
+  alert(text)
+}
+
+function transitionToArea(areaKey, spawnPoint) {
+  const nextArea = AREA_CONFIG[areaKey]
+  if (!nextArea) return
+  currentAreaKey = areaKey
+  currentArea = nextArea
+  transitionCooldown = 0.3
+  transitionHoldActive = true
+  player.width = nextArea.playerSize.width
+  player.height = nextArea.playerSize.height
+  player.renderWidth = nextArea.renderSize?.width ?? null
+  player.renderHeight = nextArea.renderSize?.height ?? null
+  if (spawnPoint) {
+    player.x = clamp(spawnPoint.x, player.width / 2, BASE_WIDTH - player.width / 2)
+    player.y = clamp(spawnPoint.y, player.height / 2, BASE_HEIGHT - player.height / 2)
+  }
+  currentBackground = backgroundCache.get(nextArea.backgroundSrc) || null
+  player.frameIndex = 1
+  player.frameTime = 0
+  player.lastZoneId = null
+}
+
+function rectContainsPoint(rect, x, y) {
+  return (
+    x >= rect.x &&
+    x <= rect.x + rect.width &&
+    y >= rect.y &&
+    y <= rect.y + rect.height
+  )
+}
+
+function handleCanvasClick(evt) {
+  const clickZones = currentArea?.clickZones || []
+  if (!clickZones.length) return
+  const rect = canvas.getBoundingClientRect()
+  const scaleX = canvas.width / rect.width
+  const scaleY = canvas.height / rect.height
+  const clickX = (evt.clientX - rect.left) * scaleX
+  const clickY = (evt.clientY - rect.top) * scaleY
+  const zone = clickZones.find(z => rectContainsPoint(z.rect, clickX, clickY))
+  if (zone) {
+    if (typeof zone.onInteract === 'function') {
+      zone.onInteract()
+    } else {
+      alert(zone.message || 'Nothing interesting happens.')
+    }
+  }
 }
 
   function update(dt) {
@@ -210,14 +403,32 @@ function showDoorwayPopup(name) {
       }
     }
 
-    const door = doorwayAt(player.x, player.y)
-    if (door) {
-      if (player.lastDoor !== door.name) {
-        showDoorwayPopup(door.name)
-        player.lastDoor = door.name
+    if (transitionCooldown > 0) {
+      transitionCooldown = Math.max(0, transitionCooldown - dt)
+    }
+
+    let zone = zoneAt(player.x, player.y)
+
+    if (transitionHoldActive) {
+      if (!zone || zone.type !== 'transition') {
+        transitionHoldActive = false
+      } else {
+        zone = null
       }
-    } else {
-      player.lastDoor = null
+    }
+
+    if (transitionCooldown <= 0 && zone) {
+      if (zone.type === 'message') {
+        if (player.lastZoneId !== zone.id) {
+          showZoneMessage(zone)
+          player.lastZoneId = zone.id
+        }
+      } else if (zone.type === 'transition') {
+        transitionToArea(zone.target, zone.targetSpawn)
+        player.lastZoneId = null
+      }
+    } else if (!zone && !transitionHoldActive) {
+      player.lastZoneId = null
     }
 
     const frames = keys.has('shift')
@@ -250,12 +461,12 @@ function showDoorwayPopup(name) {
 
   function render() {
     ctx.imageSmoothingEnabled = false
-    if (!assetsLoaded || !backgroundImage) {
+    if (!assetsLoaded || !currentBackground) {
       renderLoading()
       return
     }
 
-    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height)
+    ctx.drawImage(currentBackground, 0, 0, canvas.width, canvas.height)
 
     const frames = keys.has('shift')
       ? getDirectionalFrames(runFrames, player.direction)
@@ -263,12 +474,14 @@ function showDoorwayPopup(name) {
 
     const sprite = frames?.[player.frameIndex]
     if (sprite) {
-      const drawWidth = sprite.width
-      const drawHeight = sprite.height
+      const drawWidth = player.renderWidth ?? sprite.width
+      const drawHeight = player.renderHeight ?? sprite.height
       ctx.drawImage(
         sprite,
         Math.round(player.x - drawWidth / 2),
-        Math.round(player.y - drawHeight / 2)
+        Math.round(player.y - drawHeight / 2),
+        drawWidth,
+        drawHeight
       )
     }
   }
@@ -289,24 +502,27 @@ function showDoorwayPopup(name) {
     const walkNames = gatherUniqueNames(WALK_FRAME_MAP)
     const runNames = gatherUniqueNames(RUN_FRAME_MAP)
     const frameNames = [...walkNames, ...runNames]
-    const framePromises = frameNames.map(name => loadImage(`/game_assets/${name}.png`))
+    const framePromises = frameNames.map(name =>
+      loadImage(`/game_assets/${name}.png`).then(img => ({ name, img }))
+    )
+    const backgroundPromises = BACKGROUND_SOURCES.map(src =>
+      loadImage(src).then(img => ({ src, img }))
+    )
 
-    Promise.all([
-      loadImage('/game_assets/New_Bark_Town_HGSS.png'),
-      ...framePromises
-    ]).then(images => {
-      backgroundImage = images[0]
-      const cache = new Map()
-      frameNames.forEach((name, idx) => {
-        cache.set(name, images[idx + 1])
+    Promise.all([Promise.all(framePromises), Promise.all(backgroundPromises)])
+      .then(([frames, backgrounds]) => {
+        const cache = new Map()
+        frames.forEach(({ name, img }) => cache.set(name, img))
+        walkFrames = mapFrames(WALK_FRAME_MAP, cache)
+        runFrames = mapFrames(RUN_FRAME_MAP, cache)
+        backgrounds.forEach(({ src, img }) => backgroundCache.set(src, img))
+        transitionToArea(currentAreaKey)
+        assetsLoaded = true
       })
-      walkFrames = mapFrames(WALK_FRAME_MAP, cache)
-      runFrames = mapFrames(RUN_FRAME_MAP, cache)
-      assetsLoaded = true
-    }).finally(() => {
-      lastTime = performance.now()
-      requestAnimationFrame(loop)
-    })
+      .finally(() => {
+        lastTime = performance.now()
+        requestAnimationFrame(loop)
+      })
   }
 
   const handleKeyDown = (e) => {
@@ -325,16 +541,22 @@ function showDoorwayPopup(name) {
 
   window.addEventListener('keydown', handleKeyDown)
   window.addEventListener('keyup', handleKeyUp)
+  canvas.addEventListener('click', handleCanvasClick)
 
   const cleanup = () => {
     running = false
     window.removeEventListener('keydown', handleKeyDown)
     window.removeEventListener('keyup', handleKeyUp)
+    canvas.removeEventListener('click', handleCanvasClick)
   }
 
-  const closeBtn = win.querySelector('[data-act="close"]')
-  closeBtn?.addEventListener('click', cleanup)
+  if (mode === 'window') {
+    const closeBtn = hostElement.querySelector('[data-act="close"]')
+    closeBtn?.addEventListener('click', cleanup)
+  } else {
+    hostElement.__battleCleanup = cleanup
+  }
 
   loadAssets()
-  return win
+  return hostElement
 }

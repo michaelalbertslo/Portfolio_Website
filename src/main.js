@@ -12,7 +12,6 @@ const desktopIcons = [
   { id: 'work', label: 'Work Experience', type: 'folder' },
   { id: 'involvement', label: 'Involvement', type: 'folder' },
   { id: 'photography', label: 'Photography', type: 'camera' },
-  { id: 'battle', label: 'Battle.exe', type: 'game' },
   { id: 'about', label: 'AboutMe.exe', type: 'chat' },
   { id: 'help', label: 'Help.exe', type: 'help' }
 ]
@@ -22,6 +21,26 @@ const taskbarItems = document.getElementById('taskbar-items')
 const startBtn = document.getElementById('start-btn')
 const startMenu = document.getElementById('start-menu')
 const clock = document.getElementById('clock')
+const osRoot = document.getElementById('os-root')
+const gameRoot = document.getElementById('game-root')
+
+function enterComputerMode() {
+  gameRoot.classList.add('hidden')
+  osRoot.classList.remove('hidden')
+  startMenu.classList.add('hidden')
+}
+
+function returnToGameMode() {
+  osRoot.classList.add('hidden')
+  gameRoot.classList.remove('hidden')
+  startMenu.classList.add('hidden')
+}
+
+const standaloneBattle = createBattleGame({
+  mode: 'standalone',
+  onComputerInteract: enterComputerMode
+})
+gameRoot.appendChild(standaloneBattle)
 
 function pad(n){return n.toString().padStart(2,'0')}
 setInterval(()=>{ const d=new Date(); clock.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}` },1000)
@@ -39,7 +58,12 @@ document.querySelectorAll('#start-menu [data-launch]').forEach(btn => {
   })
 })
 
-document.getElementById('shutdown').addEventListener('click', () => { if (confirm('Shut down mwaOS?')) wm.closeAll() })
+document.getElementById('shutdown').addEventListener('click', () => {
+  if (confirm('Shut down mwaOS?')) {
+    wm.closeAll()
+    returnToGameMode()
+  }
+})
 document.getElementById('run-cmd').addEventListener('click', () => { const cmd = prompt('Type a command (try: about:bsod)'); if (cmd === 'about:bsod') showBSOD() })
 
 // Wallpaper configuration
@@ -165,7 +189,6 @@ const iconPositions = [
   { top: 115, left: 35 },   // Work Experience
   { top: 210, left: 8 },    // Involvement
   { top: 305, left: 45 },   // Photography
-  { top: 400, left: 20 },   // Battle.exe
   { top: 25, left: 110 },   // AboutMe.exe (right of Projects)
   { top: 120, left: 125 }   // Help.exe (right of Work Experience)
 ]
@@ -180,7 +203,6 @@ function createDesktopIcon(icon, index){
   el.innerHTML = `${iconSVG(icon.type)}<span style="max-width: 80px; text-align: center; line-height: 1.3;">${icon.label}</span>`
   el.addEventListener('dblclick', () => {
     if (icon.id === 'about') openAbout()
-    else if (icon.id === 'battle') openBattle()
     else if (icon.id === 'help') openHelp()
     else openFolder(icon.id, icon.label)
   })
@@ -250,7 +272,6 @@ function openFolder(id, label){
   })
 }
 function openAbout(){ fetch('/content/about.json').then(r=>r.json()).then(data => wm.openWindow(createAboutMe(data))) }
-function openBattle(){ wm.openWindow(createBattleGame()) }
 function openHelp(){ wm.openWindow(createHelpViewer()) }
 
 // Vista-style right-click desktop menu

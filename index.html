@@ -9,223 +9,226 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="h-screen w-screen overflow-hidden font-ui" style="font-family: 'Segoe UI', Tahoma, sans-serif;">
-    <!-- Desktop Wallpaper (supports both images and CSS gradients) -->
-    <div id="wallpaper" class="absolute inset-0" style="
-      background: url('/wallpapers/windows.png') center center / cover no-repeat;
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-    "></div>
+  <body class="h-screen w-screen overflow-hidden font-ui" style="font-family: 'Segoe UI', Tahoma, sans-serif; position: relative;">
+    <div id="game-root" class="mode-root" style="position: absolute; inset: 0; background: #0b1524; display: flex; align-items: flex-start; justify-content: center; padding: 0; overflow: auto;"></div>
+    <div id="os-root" class="mode-root hidden" style="position: absolute; inset: 0;">
+      <!-- Desktop Wallpaper (supports both images and CSS gradients) -->
+      <div id="wallpaper" class="absolute inset-0" style="
+        background: url('/wallpapers/windows.png') center center / cover no-repeat;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+      "></div>
 
-    <!-- Desktop Icons Area -->
-    <div id="desktop" class="absolute inset-0 p-4 pb-16 select-none" style="position: relative;"></div>
+      <!-- Desktop Icons Area -->
+      <div id="desktop" class="absolute inset-0 p-4 pb-16 select-none" style="position: relative;"></div>
 
-    <!-- Windows Layer -->
-    <div id="windows" class="absolute inset-0 pointer-events-none"></div>
+      <!-- Windows Layer -->
+      <div id="windows" class="absolute inset-0 pointer-events-none"></div>
 
-    <!-- Vista Aero Glass Taskbar -->
-    <div id="taskbar" class="absolute left-0 right-0 bottom-0 h-10 flex items-center px-1" style="
-      background: linear-gradient(180deg,
-        rgba(60, 90, 130, 0.75) 0%,
-        rgba(35, 60, 95, 0.88) 15%,
-        rgba(20, 40, 70, 0.92) 100%
-      );
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-top: 1px solid rgba(130, 175, 220, 0.35);
-      box-shadow: 
-        inset 0 1px 0 rgba(160, 200, 240, 0.25),
-        0 -2px 15px rgba(0, 0, 0, 0.35);
-    ">
-      <!-- Vista Green Start Button -->
-      <button id="start-btn" style="
-        background: radial-gradient(ellipse at 50% 15%,
-          #85e655 0%,
-          #5bc92e 25%,
-          #42a822 50%,
-          #358a1a 75%,
-          #2a7015 100%
-        );
-        border: 1px solid rgba(25, 70, 15, 0.7);
-        border-radius: 3px;
-        padding: 3px 14px 4px 10px;
-        color: white;
-        font-weight: 600;
-        font-size: 12px;
-        text-shadow: 0 1px 2px rgba(0, 40, 0, 0.6);
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.35),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-          inset 0 -3px 6px rgba(0, 60, 0, 0.25),
-          0 2px 8px rgba(0, 0, 0, 0.35);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-right: 6px;
-        transition: all 0.15s ease;
-      ">
-        <!-- Windows Logo -->
-        <svg width="16" height="16" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));">
-          <rect x="1" y="1" width="6" height="6" rx="1" fill="#ff6b35"/>
-          <rect x="9" y="1" width="6" height="6" rx="1" fill="#7ed95a"/>
-          <rect x="1" y="9" width="6" height="6" rx="1" fill="#4da6ff"/>
-          <rect x="9" y="9" width="6" height="6" rx="1" fill="#ffd93d"/>
-        </svg>
-        Start
-      </button>
-
-      <!-- Quick Launch Separator -->
-      <div style="width: 1px; height: 24px; background: linear-gradient(180deg, transparent 0%, rgba(150,190,230,0.4) 50%, transparent 100%); margin: 0 6px;"></div>
-
-      <!-- Taskbar Items -->
-      <div id="taskbar-items" class="flex-1 flex items-center gap-1 overflow-x-auto py-1"></div>
-
-      <!-- System Tray -->
-      <div style="display: flex; align-items: center; gap: 8px; padding: 0 8px; border-left: 1px solid rgba(100,150,200,0.25);">
-        <!-- System icons -->
-        <div style="display: flex; gap: 6px; align-items: center;">
-          <img src="/icons/messenger.png" width="16" height="16" alt="messenger" style="opacity: 0.85;"/>
-          <img src="/icons/wifi.png" width="16" height="16" alt="wifi" style="opacity: 0.85;"/>
-        </div>
-        <!-- Clock -->
-        <div id="clock" style="
-          font-size: 11px;
-          color: white;
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-          min-width: 45px;
-          text-align: center;
-        "></div>
-      </div>
-    </div>
-
-    <!-- Vista Glass Start Menu -->
-    <div id="start-menu" class="hidden absolute bottom-10 left-1 w-80" style="
-      background: linear-gradient(180deg,
-        rgba(45, 75, 115, 0.94) 0%,
-        rgba(30, 55, 90, 0.96) 100%
-      );
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(110, 160, 210, 0.45);
-      border-radius: 6px 6px 0 0;
-      box-shadow:
-        0 -4px 24px rgba(0, 0, 0, 0.4),
-        0 8px 32px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(160, 200, 240, 0.35),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-      overflow: hidden;
-    ">
-      <!-- Header with Profile Image -->
-      <div style="
+      <!-- Vista Aero Glass Taskbar -->
+      <div id="taskbar" class="absolute left-0 right-0 bottom-0 h-10 flex items-center px-1" style="
         background: linear-gradient(180deg,
-          rgba(70, 120, 180, 0.85) 0%,
-          rgba(50, 90, 140, 0.8) 100%
+          rgba(60, 90, 130, 0.75) 0%,
+          rgba(35, 60, 95, 0.88) 15%,
+          rgba(20, 40, 70, 0.92) 100%
         );
-        padding: 12px 16px;
-        border-bottom: 1px solid rgba(100, 150, 200, 0.35);
-        display: flex;
-        align-items: center;
-        gap: 12px;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-top: 1px solid rgba(130, 175, 220, 0.35);
+        box-shadow: 
+          inset 0 1px 0 rgba(160, 200, 240, 0.25),
+          0 -2px 15px rgba(0, 0, 0, 0.35);
       ">
-        <!-- Profile Image -->
-        <div style="
-          width: 52px;
-          height: 52px;
-          border-radius: 4px;
-          border: 2px solid rgba(255,255,255,0.4);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-          overflow: hidden;
-          background: linear-gradient(135deg, #4a90d9 0%, #1e5aa8 100%);
+        <!-- Vista Green Start Button -->
+        <button id="start-btn" style="
+          background: radial-gradient(ellipse at 50% 15%,
+            #85e655 0%,
+            #5bc92e 25%,
+            #42a822 50%,
+            #358a1a 75%,
+            #2a7015 100%
+          );
+          border: 1px solid rgba(25, 70, 15, 0.7);
+          border-radius: 3px;
+          padding: 3px 14px 4px 10px;
+          color: white;
+          font-weight: 600;
+          font-size: 12px;
+          text-shadow: 0 1px 2px rgba(0, 40, 0, 0.6);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.35),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 -3px 6px rgba(0, 60, 0, 0.25),
+            0 2px 8px rgba(0, 0, 0, 0.35);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-right: 6px;
+          transition: all 0.15s ease;
         ">
-          <img 
-            src="/profile.png" 
-            alt="Profile" 
-            style="width: 100%; height: 100%; object-fit: cover;"
-            onerror="this.style.display='none'"
-          />
-        </div>
-        <div>
-          <div style="color: white; font-weight: 600; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.4);">Michael Albert</div>
-          <div style="color: rgba(255,255,255,0.7); font-size: 11px;">Computer Engineering @ Cal Poly</div>
+          <!-- Windows Logo -->
+          <svg width="16" height="16" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));">
+            <rect x="1" y="1" width="6" height="6" rx="1" fill="#ff6b35"/>
+            <rect x="9" y="1" width="6" height="6" rx="1" fill="#7ed95a"/>
+            <rect x="1" y="9" width="6" height="6" rx="1" fill="#4da6ff"/>
+            <rect x="9" y="9" width="6" height="6" rx="1" fill="#ffd93d"/>
+          </svg>
+          Start
+        </button>
+
+        <!-- Quick Launch Separator -->
+        <div style="width: 1px; height: 24px; background: linear-gradient(180deg, transparent 0%, rgba(150,190,230,0.4) 50%, transparent 100%); margin: 0 6px;"></div>
+
+        <!-- Taskbar Items -->
+        <div id="taskbar-items" class="flex-1 flex items-center gap-1 overflow-x-auto py-1"></div>
+
+        <!-- System Tray -->
+        <div style="display: flex; align-items: center; gap: 8px; padding: 0 8px; border-left: 1px solid rgba(100,150,200,0.25);">
+          <!-- System icons -->
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <img src="/icons/messenger.png" width="16" height="16" alt="messenger" style="opacity: 0.85;"/>
+            <img src="/icons/wifi.png" width="16" height="16" alt="wifi" style="opacity: 0.85;"/>
+          </div>
+          <!-- Clock -->
+          <div id="clock" style="
+            font-size: 11px;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            min-width: 45px;
+            text-align: center;
+          "></div>
         </div>
       </div>
 
-      <!-- Menu Items -->
-      <ul style="padding: 8px;">
-        <li>
-          <button data-launch="AboutMe" style="
-            width: 100%;
-            text-align: left;
-            padding: 8px 12px;
-            border-radius: 3px;
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.1s ease;
+      <!-- Vista Glass Start Menu -->
+      <div id="start-menu" class="hidden absolute bottom-10 left-1 w-80" style="
+        background: linear-gradient(180deg,
+          rgba(45, 75, 115, 0.94) 0%,
+          rgba(30, 55, 90, 0.96) 100%
+        );
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(110, 160, 210, 0.45);
+        border-radius: 6px 6px 0 0;
+        box-shadow:
+          0 -4px 24px rgba(0, 0, 0, 0.4),
+          0 8px 32px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(160, 200, 240, 0.35),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+      ">
+        <!-- Header with Profile Image -->
+        <div style="
+          background: linear-gradient(180deg,
+            rgba(70, 120, 180, 0.85) 0%,
+            rgba(50, 90, 140, 0.8) 100%
+          );
+          padding: 12px 16px;
+          border-bottom: 1px solid rgba(100, 150, 200, 0.35);
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        ">
+          <!-- Profile Image -->
+          <div style="
+            width: 52px;
+            height: 52px;
+            border-radius: 4px;
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            overflow: hidden;
+            background: linear-gradient(135deg, #4a90d9 0%, #1e5aa8 100%);
           ">
-            <img src="/icons/chat.png" style="width: 24px; height: 24px; border-radius: 4px;" alt="chat"/>
-            AboutMe.exe
-          </button>
-        </li>
-        <li>
-          <button id="run-cmd" style="
-            width: 100%;
-            text-align: left;
-            padding: 8px 12px;
-            border-radius: 3px;
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.1s ease;
-          ">
-            <span style="width: 24px; height: 24px; background: linear-gradient(135deg, #333 0%, #111 100%); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px;">▶</span>
-            Run...
-          </button>
-        </li>
-        <li>
-          <button id="change-wallpaper" style="
-            width: 100%;
-            text-align: left;
-            padding: 8px 12px;
-            border-radius: 3px;
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.1s ease;
-          ">
-            <img src="/icons/change_wallpaper.png" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover;" alt="wallpaper"/>
-            Change Wallpaper
-          </button>
-        </li>
-        <li style="border-top: 1px solid rgba(100,150,200,0.25); margin-top: 6px; padding-top: 6px;">
-          <button id="shutdown" style="
-            width: 100%;
-            text-align: left;
-            padding: 8px 12px;
-            border-radius: 3px;
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.1s ease;
-          ">
-            <span style="width: 24px; height: 24px; background: linear-gradient(135deg, #c04040 0%, #802020 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="white">
-                <path d="M7.5 1v7h1V1h-1zM4.5 2.5A6 6 0 1 0 11.5 2.5l-.7.7A5 5 0 1 1 5.2 3.2l-.7-.7z"/>
-              </svg>
-            </span>
-            Shut Down...
-          </button>
-        </li>
-      </ul>
+            <img 
+              src="/profile.png" 
+              alt="Profile" 
+              style="width: 100%; height: 100%; object-fit: cover;"
+              onerror="this.style.display='none'"
+            />
+          </div>
+          <div>
+            <div style="color: white; font-weight: 600; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.4);">Michael Albert</div>
+            <div style="color: rgba(255,255,255,0.7); font-size: 11px;">Computer Engineering @ Cal Poly</div>
+          </div>
+        </div>
+
+        <!-- Menu Items -->
+        <ul style="padding: 8px;">
+          <li>
+            <button data-launch="AboutMe" style="
+              width: 100%;
+              text-align: left;
+              padding: 8px 12px;
+              border-radius: 3px;
+              color: white;
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              transition: all 0.1s ease;
+            ">
+              <img src="/icons/chat.png" style="width: 24px; height: 24px; border-radius: 4px;" alt="chat"/>
+              AboutMe.exe
+            </button>
+          </li>
+          <li>
+            <button id="run-cmd" style="
+              width: 100%;
+              text-align: left;
+              padding: 8px 12px;
+              border-radius: 3px;
+              color: white;
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              transition: all 0.1s ease;
+            ">
+              <span style="width: 24px; height: 24px; background: linear-gradient(135deg, #333 0%, #111 100%); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px;">▶</span>
+              Run...
+            </button>
+          </li>
+          <li>
+            <button id="change-wallpaper" style="
+              width: 100%;
+              text-align: left;
+              padding: 8px 12px;
+              border-radius: 3px;
+              color: white;
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              transition: all 0.1s ease;
+            ">
+              <img src="/icons/change_wallpaper.png" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover;" alt="wallpaper"/>
+              Change Wallpaper
+            </button>
+          </li>
+          <li style="border-top: 1px solid rgba(100,150,200,0.25); margin-top: 6px; padding-top: 6px;">
+            <button id="shutdown" style="
+              width: 100%;
+              text-align: left;
+              padding: 8px 12px;
+              border-radius: 3px;
+              color: white;
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              transition: all 0.1s ease;
+            ">
+              <span style="width: 24px; height: 24px; background: linear-gradient(135deg, #c04040 0%, #802020 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="white">
+                  <path d="M7.5 1v7h1V1h-1zM4.5 2.5A6 6 0 1 0 11.5 2.5l-.7.7A5 5 0 1 1 5.2 3.2l-.7-.7z"/>
+                </svg>
+              </span>
+              Shut Down...
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <style>
