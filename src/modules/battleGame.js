@@ -48,7 +48,9 @@ function mapFrames(map, cache) {
 export function createBattleGame(options = {}) {
   const {
     mode = 'window',
-    onComputerInteract = null
+    onComputerInteract = null,
+    initialArea = 'outside',
+    initialSpawn = null
   } = options
   const container = document.createElement('div')
   container.style.cssText = 'height:100%;background:#0b1524;display:flex;flex-direction:column;gap:8px;padding:8px;font-family:Segoe UI'
@@ -68,8 +70,24 @@ export function createBattleGame(options = {}) {
   info.style.fontSize = '12px'
   info.innerHTML = `
     <div><strong>Controls:</strong> Arrow Keys / WASD to walk • Hold Shift to run</div>
-    <div>Sprites live in <code>/public/game_assets</code>. Drop new PNGs there and reference them in <code>battleGame.js</code>.</div>
   `
+
+  const interactionPrompt = document.createElement('div')
+  interactionPrompt.style.cssText = `
+    display:none;
+    margin:8px 0 0;
+    padding:6px 10px;
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:4px;
+    color:#fefae0;
+    background:rgba(11,21,36,0.7);
+    font-family:'Press Start 2P','VT323',monospace;
+    font-size:11px;
+    text-align:center;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+  `
+  interactionPrompt.textContent = 'Press E, Enter, Space, or click to interact with the computer.'
 
   if (mode !== 'window') {
     container.style.border = 'none'
@@ -81,7 +99,7 @@ export function createBattleGame(options = {}) {
     container.style.alignItems = 'center'
   }
 
-  container.append(canvas, info)
+  container.append(canvas, interactionPrompt, info)
 
   let hostElement
   if (mode === 'window') {
@@ -271,7 +289,9 @@ export function createBattleGame(options = {}) {
     new Set(Object.values(AREA_CONFIG).map(area => area.backgroundSrc))
   )
 
-  let currentAreaKey = 'outside'
+  const initialAreaKey = AREA_CONFIG[initialArea] ? initialArea : 'outside'
+  const initialSpawnPoint = initialSpawn
+  let currentAreaKey = initialAreaKey
   let currentArea = AREA_CONFIG[currentAreaKey]
   let transitionCooldown = 0
   let transitionHoldActive = false
@@ -282,6 +302,7 @@ export function createBattleGame(options = {}) {
     KeyW: 'up', KeyS: 'down', KeyA: 'left', KeyD: 'right',
     ShiftLeft: 'shift', ShiftRight: 'shift'
   }
+  const INTERACT_KEYS = new Set(['KeyE', 'Enter', 'Space'])
 
 function clamp(val, min, max) {
   return Math.max(min, Math.min(max, val))
@@ -294,24 +315,27 @@ function rectsOverlap(a, b) {
     a.y + a.height > b.y
 }
 
-function blockedAt(nx, ny) {
-  const footprint = {
-    x: nx - player.width / 2,
-    y: ny - player.height / 2,
-    width: player.width,
-    height: player.height
+function getFootprint(nx, ny, width, height) {
+  return {
+    x: nx - width / 2,
+    y: ny - height / 2,
+    width,
+    height
   }
+}
+
+function getPlayerFootprint(nx = player.x, ny = player.y) {
+  return getFootprint(nx, ny, player.width, player.height)
+}
+
+function blockedAt(nx, ny) {
+  const footprint = getPlayerFootprint(nx, ny)
   const collisionSet = currentArea?.collisionRects || []
   return collisionSet.some(rect => rectsOverlap(footprint, rect))
 }
 
 function zoneAt(nx, ny) {
-  const footprint = {
-    x: nx - player.width / 2,
-    y: ny - player.height / 2,
-    width: player.width,
-    height: player.height
-  }
+  const footprint = getPlayerFootprint(nx, ny)
   const zones = currentArea?.zones || []
   return zones.find(zone => rectsOverlap(footprint, zone.rect))
 }
@@ -319,6 +343,44 @@ function zoneAt(nx, ny) {
 function showZoneMessage(zone) {
   const text = zone.message || `${zone.name} is in progress. Check back soon!`
   alert(text)
+}
+
+function getComputerZone() {
+  if (currentAreaKey !== 'upstairs') return null
+  const zones = currentArea?.clickZones || []
+  return zones.find(zone => zone.id === 'upstairs-computer') || null
+}
+
+function isPlayerNearComputer() {
+  const zone = getComputerZone()
+  if (!zone) return false
+  const footprint = getPlayerFootprint()
+  return rectsOverlap(footprint, zone.rect)
+}
+
+let computerPromptVisible = false
+function setComputerPromptVisible(visible) {
+  if (visible === computerPromptVisible) return
+  computerPromptVisible = visible
+  interactionPrompt.style.display = visible ? 'block' : 'none'
+}
+
+function triggerZoneInteraction(zone) {
+  if (!zone) return
+  if (typeof zone.onInteract === 'function') {
+    zone.onInteract()
+  } else {
+    alert(zone.message || 'Nothing interesting happens.')
+  }
+}
+
+function tryInteractWithComputer() {
+  const zone = getComputerZone()
+  if (!zone) return false
+  const footprint = getPlayerFootprint()
+  if (!rectsOverlap(footprint, zone.rect)) return false
+  triggerZoneInteraction(zone)
+  return true
 }
 
 function transitionToArea(areaKey, spawnPoint) {
@@ -361,11 +423,7 @@ function handleCanvasClick(evt) {
   const clickY = (evt.clientY - rect.top) * scaleY
   const zone = clickZones.find(z => rectContainsPoint(z.rect, clickX, clickY))
   if (zone) {
-    if (typeof zone.onInteract === 'function') {
-      zone.onInteract()
-    } else {
-      alert(zone.message || 'Nothing interesting happens.')
-    }
+    triggerZoneInteraction(zone)
   }
 }
 
@@ -430,6 +488,8 @@ function handleCanvasClick(evt) {
     } else if (!zone && !transitionHoldActive) {
       player.lastZoneId = null
     }
+
+    setComputerPromptVisible(isPlayerNearComputer())
 
     const frames = keys.has('shift')
       ? getDirectionalFrames(runFrames, player.direction)
@@ -516,7 +576,7 @@ function handleCanvasClick(evt) {
         walkFrames = mapFrames(WALK_FRAME_MAP, cache)
         runFrames = mapFrames(RUN_FRAME_MAP, cache)
         backgrounds.forEach(({ src, img }) => backgroundCache.set(src, img))
-        transitionToArea(currentAreaKey)
+        transitionToArea(currentAreaKey, initialSpawnPoint || undefined)
         assetsLoaded = true
       })
       .finally(() => {
@@ -526,6 +586,12 @@ function handleCanvasClick(evt) {
   }
 
   const handleKeyDown = (e) => {
+    if (INTERACT_KEYS.has(e.code)) {
+      if (tryInteractWithComputer()) {
+        e.preventDefault()
+        return
+      }
+    }
     const action = controls[e.code]
     if (!action) return
     e.preventDefault()

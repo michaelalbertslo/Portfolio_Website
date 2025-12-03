@@ -3,7 +3,7 @@
   "title": "Computer Engineering Student",
   "subtitle": "Cal Poly SLO",
   "profileImage": "/profile.png",
-  "about": "I am a Computer Engineering student at Cal Poly SLO. I am interested in embedded programming, software development, and hardware design.\n\n I love the outdoors, hiking, biking, and rock climbing. I also love music, especially live music, and am learning to play bass guitar. I'm passionate about appropriate technology, and try to focus my work on building low cost, open source solutions for the economically developing world.\n\n I enjoy working with Arduino, Raspberry Pi, and making cicuit bent devices on the side.",
+  "about": "I am a Computer Engineering student at Cal Poly SLO. I am interested in embedded programming, renewable energy, software development, and hardware design.\n\n I love the outdoors, hiking, biking, and rock climbing. I also love music, especially live music, and am learning to play bass guitar. I'm passionate about appropriate technology, and try to focus my work on building low cost, open source solutions for the economically developing world.\n\n I enjoy working with Arduino, Raspberry Pi, and making cicuit bent devices on the side.",
   "links": [
     {
       "label": "LinkedIn",
@@ -29,6 +29,8 @@
     "RISC‑V Assembly",
     "Arduino",
     "STM32",
+    "Raspberry Pi",
+    "KiCad",
     "LangChain",
     "TensorFlow"
   ]

@@ -7,6 +7,11 @@ import { createHelpViewer } from './modules/helpViewer.js'
 
 const wm = new WindowManager(document.getElementById('windows'))
 
+const GAME_BASE_WIDTH = 493
+const GAME_BASE_HEIGHT = 397
+const GAME_SCALE = 1.5
+const RESUME_PDF_PATH = '/documents/Michael_Albert_Resume.pdf'
+
 const desktopIcons = [
   { id: 'projects', label: 'Projects', type: 'folder' },
   { id: 'work', label: 'Work Experience', type: 'folder' },
@@ -24,6 +29,50 @@ const clock = document.getElementById('clock')
 const osRoot = document.getElementById('os-root')
 const gameRoot = document.getElementById('game-root')
 
+const INTRO_MESSAGES = [
+  "Hello, I'm Michael. Welcome to my portfolio website! Click, press enter, e, or spacebar to continue.",
+  "This website is modeled after New Bark town from Pokemon Heart Gold!",
+  "Inside the starting bedroom, there is a computer. Interact with it to learn more about me!",
+  "Press continue to enter the game, press instructions if you need help navigating the website, and press the resume link if you are in a rush!"
+]
+
+const {
+  overlay: introOverlay,
+  textBox: introText,
+  buttonsWrapper: introButtons,
+  continueBtn,
+  instructionsBtn,
+  resumeBtn
+} = createIntroOverlay()
+gameRoot.appendChild(introOverlay)
+
+let battleInstance = null
+let introStep = 0
+let introComplete = false
+
+introOverlay.addEventListener('click', handleIntroOverlayClick)
+window.addEventListener('keydown', handleIntroKey)
+
+if (INTRO_MESSAGES.length <= 1) {
+  revealIntroButtons()
+}
+
+function ensureBattleMounted() {
+  if (battleInstance) return
+  battleInstance = createBattleGame({
+    mode: 'standalone',
+    onComputerInteract: enterComputerMode,
+    initialArea: 'upstairs',
+    initialSpawn: { x: 191, y: 154 }
+  })
+  battleInstance.style.margin = '0 auto'
+  if (introOverlay.isConnected) {
+    gameRoot.insertBefore(battleInstance, introOverlay)
+  } else {
+    gameRoot.appendChild(battleInstance)
+  }
+}
+
 function enterComputerMode() {
   gameRoot.classList.add('hidden')
   osRoot.classList.remove('hidden')
@@ -36,11 +85,15 @@ function returnToGameMode() {
   startMenu.classList.add('hidden')
 }
 
-const standaloneBattle = createBattleGame({
-  mode: 'standalone',
-  onComputerInteract: enterComputerMode
+continueBtn.addEventListener('click', () => {
+  ensureBattleMounted()
+  introOverlay.classList.add('intro-overlay--hidden')
+  setTimeout(() => introOverlay.remove(), 300)
 })
-gameRoot.appendChild(standaloneBattle)
+
+instructionsBtn.addEventListener('click', () => {
+  introText.textContent = INTRO_MESSAGES[INTRO_MESSAGES.length - 1] || ''
+})
 
 function pad(n){return n.toString().padStart(2,'0')}
 setInterval(()=>{ const d=new Date(); clock.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}` },1000)
@@ -273,6 +326,80 @@ function openFolder(id, label){
 }
 function openAbout(){ fetch('/content/about.json').then(r=>r.json()).then(data => wm.openWindow(createAboutMe(data))) }
 function openHelp(){ wm.openWindow(createHelpViewer()) }
+
+function createIntroOverlay() {
+  const overlay = document.createElement('div')
+  overlay.className = 'intro-overlay'
+
+  const card = document.createElement('div')
+  card.className = 'intro-card'
+  card.style.width = `${GAME_BASE_WIDTH * GAME_SCALE}px`
+  card.style.height = `${GAME_BASE_HEIGHT * GAME_SCALE}px`
+
+  const textBox = document.createElement('div')
+  textBox.className = 'intro-text'
+  textBox.textContent = INTRO_MESSAGES[0]
+
+  const buttons = document.createElement('div')
+  buttons.className = 'intro-buttons'
+  buttons.style.display = 'none'
+
+  const continueBtn = createIntroButton('Continue')
+  const instructionsBtn = createIntroButton('More Instructions')
+  const resumeBtn = createIntroButton('Resume', 'a')
+  resumeBtn.href = RESUME_PDF_PATH
+  resumeBtn.target = '_blank'
+  resumeBtn.rel = 'noopener noreferrer'
+
+  buttons.append(continueBtn, instructionsBtn, resumeBtn)
+  card.append(textBox, buttons)
+  overlay.append(card)
+
+  return { overlay, textBox, buttonsWrapper: buttons, continueBtn, instructionsBtn, resumeBtn }
+}
+
+function createIntroButton(label, tag = 'button') {
+  const btn = document.createElement(tag)
+  if (tag === 'button') {
+    btn.type = 'button'
+  }
+  btn.className = 'intro-button'
+  btn.textContent = label
+  return btn
+}
+
+function handleIntroOverlayClick() {
+  if (introComplete) return
+  advanceIntroSequence()
+}
+
+function handleIntroKey(e) {
+  if (introComplete) return
+  const allowedKeys = [' ', 'Space', 'Spacebar', 'Enter', 'e', 'E']
+  if (allowedKeys.includes(e.key)) {
+    e.preventDefault()
+    advanceIntroSequence()
+  }
+}
+
+function advanceIntroSequence() {
+  if (introStep < INTRO_MESSAGES.length - 1) {
+    introStep += 1
+    introText.textContent = INTRO_MESSAGES[introStep]
+  } else if (!introComplete) {
+    introText.textContent = INTRO_MESSAGES[introStep]
+    revealIntroButtons()
+  }
+}
+
+function revealIntroButtons() {
+  if (introComplete) return
+  introText.textContent = ''
+  introButtons.style.display = 'flex'
+  introComplete = true
+  introOverlay.removeEventListener('click', handleIntroOverlayClick)
+  window.removeEventListener('keydown', handleIntroKey)
+}
 
 // Vista-style right-click desktop menu
 desktop.addEventListener('contextmenu', (e)=>{
