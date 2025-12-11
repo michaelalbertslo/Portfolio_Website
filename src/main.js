@@ -127,7 +127,7 @@ const wallpapers = [
   // Windows Classic
   {
     type: 'image',
-    value: '/wallpapers/windows.png'
+    value: '/wallpapers/windows.jpg'
   },
   {
     type: 'image',
@@ -169,6 +169,9 @@ function applyWallpaper(wallpaper) {
     wallpaperEl.style.background = `url('${wallpaper.value}') center center / cover no-repeat`
     wallpaperEl.style.backgroundSize = 'cover'
     wallpaperEl.style.backgroundPosition = 'center center'
+    wallpaperEl.style.backgroundRepeat = 'no-repeat'
+    wallpaperEl.style.backgroundColor = '#000'
+    wallpaperEl.style.imageRendering = 'auto'
   } else {
     // CSS gradient wallpaper
     wallpaperEl.style.background = wallpaper.value
@@ -181,6 +184,11 @@ document.getElementById('change-wallpaper').addEventListener('click', () => {
   currentWallpaper = (currentWallpaper + 1) % wallpapers.length
   applyWallpaper(wallpapers[currentWallpaper])
 })
+
+// Set initial wallpaper to the first entry
+if (wallpapers.length) {
+  applyWallpaper(wallpapers[currentWallpaper])
+}
 
 function showBSOD(){
   const overlay = document.createElement('div')

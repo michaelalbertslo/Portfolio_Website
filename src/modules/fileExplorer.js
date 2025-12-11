@@ -84,7 +84,7 @@ function getTypeLabel(item, name) {
 
 export function createFileExplorer({ title, rootData, onOpenHardware, onOpenSoftware, onOpenText, onOpenPdf, onOpenGallery }) {
   const container = document.createElement('div')
-  container.className = 'h-full flex flex-col'
+  container.className = 'h-full flex flex-col file-explorer'
   
   // Navigation state
   let currentPath = []
@@ -251,13 +251,9 @@ export function createFileExplorer({ title, rootData, onOpenHardware, onOpenSoft
       // Single click - show details
       item.addEventListener('click', (e) => {
         // Remove selection from all
-        container.querySelectorAll('.file-item').forEach(i => {
-          i.style.background = ''
-          i.style.border = '1px solid transparent'
-        })
+        container.querySelectorAll('.file-item').forEach(i => i.classList.remove('selected'))
         // Select this one
-        item.style.background = 'linear-gradient(180deg, rgba(150,190,230,0.5) 0%, rgba(120,160,210,0.3) 100%)'
-        item.style.border = '1px solid rgba(80,130,190,0.5)'
+        item.classList.add('selected')
         
         showDetails(name, data)
       })

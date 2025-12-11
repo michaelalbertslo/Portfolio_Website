@@ -5,38 +5,22 @@ export function createHelpViewer() {
   container.className = 'help-container'
   
   container.innerHTML = `
-    <div style="
-      height: 100%;
-      overflow-y: auto;
-      background: linear-gradient(180deg, #f0f4f8 0%, #e8ecf0 100%);
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-    ">
+    <div class="help-scroll" style="height: 100%; overflow-y: auto;">
       <!-- Header -->
-      <div style="
-        background: linear-gradient(180deg, #4a90d9 0%, #2d6ba3 100%);
-        padding: 20px 24px;
-        color: white;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-      ">
-        <h1 style="margin: 0; font-size: 22px; font-weight: 600;">Welcome to mwaOS</h1>
-        <p style="margin: 8px 0 0 0; opacity: 0.9; font-size: 13px;">A retro-inspired portfolio experience</p>
+      <div class="help-hero" style="padding: 20px 24px;">
+        <h1 style="margin: 0;">Welcome to mwaOS</h1>
+        <p style="margin: 8px 0 0 0;">A retro-inspired portfolio experience</p>
       </div>
       
       <!-- Content -->
       <div style="padding: 20px 24px;">
         
         <!-- Navigation Section -->
-        <div style="
-          background: white;
-          border-radius: 6px;
-          padding: 16px 20px;
-          margin-bottom: 16px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        ">
-          <h2 style="margin: 0 0 12px 0; font-size: 15px; color: #2d6ba3; display: flex; align-items: center; gap: 8px;">
+        <div class="help-section" data-help-section>
+          <h2 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 18px;"></span> Basic Navigation
           </h2>
-          <ul style="margin: 0; padding-left: 24px; color: #444; font-size: 13px; line-height: 1.8;">
+          <ul style="margin: 0; padding-left: 24px;">
             <li><strong>Double-click</strong> desktop icons to open folders and programs</li>
             <li><strong>Drag</strong> window title bars to move windows around</li>
             <li><strong>Click</strong> the Start button for quick access menu</li>
@@ -45,17 +29,11 @@ export function createHelpViewer() {
         </div>
         
         <!-- Folders Section -->
-        <div style="
-          background: white;
-          border-radius: 6px;
-          padding: 16px 20px;
-          margin-bottom: 16px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        ">
-          <h2 style="margin: 0 0 12px 0; font-size: 15px; color: #2d6ba3; display: flex; align-items: center; gap: 8px;">
+        <div class="help-section" data-help-section>
+          <h2 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 18px;"></span> Desktop Folders
           </h2>
-          <ul style="margin: 0; padding-left: 24px; color: #444; font-size: 13px; line-height: 1.8;">
+          <ul style="margin: 0; padding-left: 24px;">
             <li><strong>Projects</strong> — Engineering and coding projects</li>
             <li><strong>Work Experience</strong> — Professional experience and internships</li>
             <li><strong>Involvement</strong> — Community service and extracurriculars</li>
@@ -64,17 +42,11 @@ export function createHelpViewer() {
         </div>
         
         <!-- File Types Section -->
-        <div style="
-          background: white;
-          border-radius: 6px;
-          padding: 16px 20px;
-          margin-bottom: 16px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        ">
-          <h2 style="margin: 0 0 12px 0; font-size: 15px; color: #2d6ba3; display: flex; align-items: center; gap: 8px;">
+        <div class="help-section" data-help-section>
+          <h2 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 18px;"></span> File Types
           </h2>
-          <ul style="margin: 0; padding-left: 24px; color: #444; font-size: 13px; line-height: 1.8;">
+          <ul style="margin: 0; padding-left: 24px;">
             <li><strong>README</strong> — Project overviews and descriptions</li>
             <li><strong>.sch files</strong> — Hardware diagrams (interactive!)</li>
             <li><strong>.flow files</strong> — Software architecture visualizations</li>
@@ -85,17 +57,11 @@ export function createHelpViewer() {
         </div>
         
         <!-- Programs Section -->
-        <div style="
-          background: white;
-          border-radius: 6px;
-          padding: 16px 20px;
-          margin-bottom: 16px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        ">
-          <h2 style="margin: 0 0 12px 0; font-size: 15px; color: #2d6ba3; display: flex; align-items: center; gap: 8px;">
+        <div class="help-section" data-help-section>
+          <h2 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 18px;"></span> Programs
           </h2>
-          <ul style="margin: 0; padding-left: 24px; color: #444; font-size: 13px; line-height: 1.8;">
+          <ul style="margin: 0; padding-left: 24px;">
             <li><strong>AboutMe.exe</strong> — Learn more about me and my background</li>
             <li><strong>Battle.exe</strong> — A fun mini-game to pass the time</li>
             <li><strong>Help.exe</strong> — You're reading it right now!</li>
@@ -103,16 +69,11 @@ export function createHelpViewer() {
         </div>
         
         <!-- Tips Section -->
-        <div style="
-          background: linear-gradient(135deg, #e8f4fd 0%, #d4e8f7 100%);
-          border-radius: 6px;
-          padding: 16px 20px;
-          border-left: 4px solid #4a90d9;
-        ">
-          <h2 style="margin: 0 0 10px 0; font-size: 15px; color: #2d6ba3; display: flex; align-items: center; gap: 8px;">
+        <div class="help-section help-section--tips" data-help-section>
+          <h2 style="margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 18px;"></span> Pro Tips
           </h2>
-          <ul style="margin: 0; padding-left: 24px; color: #444; font-size: 13px; line-height: 1.8;">
+          <ul style="margin: 0; padding-left: 24px;">
             <li>Use the <strong>Back</strong> button in file explorer to navigate up</li>
             <li>Click the <strong>breadcrumb path</strong> to jump to any folder level</li>
             <li>Try <strong>Change Wallpaper</strong> in the Start menu!</li>

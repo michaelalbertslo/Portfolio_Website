@@ -2,7 +2,7 @@ import { makeWindow } from '../os/windowManager.js'
 
 export function createPdfViewer({ title, src }) {
   const container = document.createElement('div')
-  container.className = 'h-full flex flex-col'
+  container.className = 'h-full flex flex-col pdf-viewer'
   
   container.innerHTML = `
     <!-- Toolbar -->

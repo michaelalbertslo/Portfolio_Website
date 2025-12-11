@@ -2,7 +2,7 @@ import { makeWindow } from '../os/windowManager.js'
 
 export function createArticleViewer({ title, content, images = [] }) {
   const container = document.createElement('div')
-  container.className = 'h-full flex flex-col'
+  container.className = 'h-full flex flex-col article-viewer'
   
   // Support content as array of lines (for easier JSON editing)
   let textContent = Array.isArray(content) ? content.join('\n') : content
