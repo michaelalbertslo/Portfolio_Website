@@ -30,65 +30,46 @@
       <!-- Windows Layer -->
       <div id="windows" class="absolute inset-0 pointer-events-none"></div>
 
-      <!-- Vista Aero Glass Taskbar -->
+      <!-- Pixel Art Taskbar -->
       <div id="taskbar" class="absolute left-0 right-0 bottom-0 h-10 flex items-center px-1" style="
-        background: linear-gradient(180deg,
-          rgba(60, 90, 130, 0.75) 0%,
-          rgba(35, 60, 95, 0.88) 15%,
-          rgba(20, 40, 70, 0.92) 100%
-        );
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border-top: 1px solid rgba(130, 175, 220, 0.35);
+        background: #102b4a;
+        border-top: 3px solid #1f3f6a;
         box-shadow: 
-          inset 0 1px 0 rgba(160, 200, 240, 0.25),
-          0 -2px 15px rgba(0, 0, 0, 0.35);
+          0 -3px 0 #061528,
+          inset 0 3px 0 #1c3d66;
       ">
-        <!-- Vista Green Start Button -->
+        <!-- Pixel Art Home Button -->
         <button id="start-btn" style="
-          background: radial-gradient(ellipse at 50% 15%,
-            #85e655 0%,
-            #5bc92e 25%,
-            #42a822 50%,
-            #358a1a 75%,
-            #2a7015 100%
-          );
-          border: 1px solid rgba(25, 70, 15, 0.7);
+          background: #52b82e;
+          border: 3px solid #2f6b1a;
           border-radius: 3px;
-          padding: 3px 14px 4px 10px;
-          color: white;
+          padding: 6px 14px 6px 10px;
+          color: #0b1a0d;
           font-weight: 600;
           font-size: 12px;
-          text-shadow: 0 1px 2px rgba(0, 40, 0, 0.6);
+          text-shadow: none;
           box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.35),
-            inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-            inset 0 -3px 6px rgba(0, 60, 0, 0.25),
-            0 2px 8px rgba(0, 0, 0, 0.35);
+            inset -3px -3px 0 rgba(0, 0, 0, 0.2),
+            3px 3px 0 #061528;
           display: flex;
           align-items: center;
           gap: 6px;
           margin-right: 6px;
-          transition: all 0.15s ease;
+          transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
         ">
-          <!-- Windows Logo -->
-          <svg width="16" height="16" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));">
-            <rect x="1" y="1" width="6" height="6" rx="1" fill="#ff6b35"/>
-            <rect x="9" y="1" width="6" height="6" rx="1" fill="#7ed95a"/>
-            <rect x="1" y="9" width="6" height="6" rx="1" fill="#4da6ff"/>
-            <rect x="9" y="9" width="6" height="6" rx="1" fill="#ffd93d"/>
-          </svg>
-          Start
+          <!-- Home Icon -->
+          <img src="/icons/home.png" width="20" height="20" alt="home" style="image-rendering: pixelated;"/>
+          Home
         </button>
 
         <!-- Quick Launch Separator -->
-        <div style="width: 1px; height: 24px; background: linear-gradient(180deg, transparent 0%, rgba(150,190,230,0.4) 50%, transparent 100%); margin: 0 6px;"></div>
+        <div style="width: 2px; height: 24px; background: #1f3f6a; margin: 0 6px; box-shadow: 1px 0 0 #8ec8ff;"></div>
 
         <!-- Taskbar Items -->
         <div id="taskbar-items" class="flex-1 flex items-center gap-1 overflow-x-auto py-1"></div>
 
         <!-- System Tray -->
-        <div style="display: flex; align-items: center; gap: 8px; padding: 0 8px; border-left: 1px solid rgba(100,150,200,0.25);">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 0 8px; border-left: 2px solid #1f3f6a; box-shadow: 1px 0 0 #8ec8ff;">
           <!-- System icons -->
           <div style="display: flex; gap: 6px; align-items: center;">
             <img src="/icons/messenger.png" width="16" height="16" alt="messenger" style="opacity: 0.85;"/>
@@ -97,39 +78,28 @@
           <!-- Clock -->
           <div id="clock" style="
             font-size: 11px;
-            color: white;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            min-width: 45px;
+            color: #eaf6ff;
+            text-shadow: none;
+            min-width: 50px;
             text-align: center;
           "></div>
         </div>
       </div>
 
-      <!-- Vista Glass Start Menu -->
+      <!-- Pixel Art Start Menu -->
       <div id="start-menu" class="hidden absolute bottom-10 left-1 w-80" style="
-        background: linear-gradient(180deg,
-          rgba(45, 75, 115, 0.94) 0%,
-          rgba(30, 55, 90, 0.96) 100%
-        );
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border: 1px solid rgba(110, 160, 210, 0.45);
-        border-radius: 6px 6px 0 0;
-        box-shadow:
-          0 -4px 24px rgba(0, 0, 0, 0.4),
-          0 8px 32px rgba(0, 0, 0, 0.5),
-          inset 0 1px 0 rgba(160, 200, 240, 0.35),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        background: #102b4a;
+        border: 3px solid #8ec8ff;
+        border-radius: 3px;
+        box-shadow: 5px 5px 0 #0a1628;
         overflow: hidden;
       ">
         <!-- Header with Profile Image -->
         <div style="
-          background: linear-gradient(180deg,
-            rgba(70, 120, 180, 0.85) 0%,
-            rgba(50, 90, 140, 0.8) 100%
-          );
+          background: #2d6ba3;
           padding: 12px 16px;
-          border-bottom: 1px solid rgba(100, 150, 200, 0.35);
+          border-bottom: 2px solid #1f3f6a;
+          box-shadow: inset 0 -3px 0 #26486f;
           display: flex;
           align-items: center;
           gap: 12px;
@@ -138,11 +108,11 @@
           <div style="
             width: 52px;
             height: 52px;
-            border-radius: 4px;
-            border: 2px solid rgba(255,255,255,0.4);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-radius: 2px;
+            border: 2px solid #ffd93d;
+            box-shadow: 2px 2px 0 #0a1628;
             overflow: hidden;
-            background: linear-gradient(135deg, #4a90d9 0%, #1e5aa8 100%);
+            background: #4a90d9;
           ">
             <img 
               src="/profile.png" 
@@ -152,8 +122,8 @@
             />
           </div>
           <div>
-            <div style="color: white; font-weight: 600; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.4);">Michael Albert</div>
-            <div style="color: rgba(255,255,255,0.7); font-size: 11px;">Computer Engineering @ Cal Poly</div>
+            <div style="color: #eaf6ff; font-weight: 600; font-size: 14px; text-shadow: none;">Michael Albert</div>
+            <div style="color: #9bd1ff; font-size: 11px;">Computer Engineering @ Cal Poly</div>
           </div>
         </div>
 
@@ -189,8 +159,8 @@
               gap: 10px;
               transition: all 0.1s ease;
             ">
-              <span style="width: 24px; height: 24px; background: linear-gradient(135deg, #333 0%, #111 100%); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px;">▶</span>
-              Run...
+              <img src="/icons/terminal.png" style="width: 24px; height: 24px; image-rendering: pixelated;" alt="terminal"/>
+              Terminal
             </button>
           </li>
           <li>
@@ -210,7 +180,7 @@
               Change Wallpaper
             </button>
           </li>
-          <li style="border-top: 1px solid rgba(100,150,200,0.25); margin-top: 6px; padding-top: 6px;">
+          <li style="border-top: 2px solid #1f3f6a; box-shadow: 0 1px 0 #8ec8ff; margin-top: 6px; padding-top: 6px;">
             <button id="shutdown" style="
               width: 100%;
               text-align: left;
@@ -223,11 +193,7 @@
               gap: 10px;
               transition: all 0.1s ease;
             ">
-              <span style="width: 24px; height: 24px; background: linear-gradient(135deg, #c04040 0%, #802020 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="white">
-                  <path d="M7.5 1v7h1V1h-1zM4.5 2.5A6 6 0 1 0 11.5 2.5l-.7.7A5 5 0 1 1 5.2 3.2l-.7-.7z"/>
-                </svg>
-              </span>
+              <img src="/icons/shutdown.png" style="width: 24px; height: 24px; image-rendering: pixelated;" alt="shutdown"/>
               Shut Down...
             </button>
           </li>
@@ -236,33 +202,23 @@
     </div>
 
     <style>
-      /* Start menu button hover effects */
+      /* Start menu button hover effects - Pixel Art Style */
       #start-menu button:hover {
-        background: linear-gradient(180deg,
-          rgba(100, 150, 210, 0.5) 0%,
-          rgba(70, 120, 180, 0.4) 100%
-        ) !important;
+        background: #9bd1ff !important;
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 3px 0 #0a1628;
       }
       
-      /* Start button hover */
+      /* Start button hover - Pixel Art Style */
       #start-btn:hover {
-        background: radial-gradient(ellipse at 50% 15%,
-          #95f065 0%,
-          #6bd93e 25%,
-          #52b832 50%,
-          #459a2a 75%,
-          #3a8025 100%
-        ) !important;
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.4),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.15),
-          inset 0 -3px 6px rgba(0, 60, 0, 0.2),
-          0 0 15px rgba(100, 220, 80, 0.4),
-          0 2px 8px rgba(0, 0, 0, 0.35) !important;
+        background: #65d040 !important;
+        box-shadow: 4px 4px 0 #061528 !important;
+        transform: translate(-1px, -1px);
       }
       
       #start-btn:active {
-        transform: translateY(1px);
+        transform: translate(1px, 1px);
+        box-shadow: inset 2px 2px 0 #061528 !important;
       }
     </style>
 

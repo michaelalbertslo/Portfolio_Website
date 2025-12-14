@@ -135,11 +135,11 @@ const wallpapers = [
   },
   {
     type: 'image',
-    value: '/wallpapers/longs.JPG'
+    value: '/wallpapers/longs.jpg'
   },
   {
     type: 'image',
-    value: '/wallpapers/snowy_mtn.JPG'
+    value: '/wallpapers/snowy_mtn.jpg'
   },
   {
     type: 'image',
@@ -262,7 +262,7 @@ function createDesktopIcon(icon, index){
   el.style.top = `${pos.top}px`
   el.style.left = `${pos.left}px`
   el.innerHTML = `${iconSVG(icon.type)}<span style="max-width: 80px; text-align: center; line-height: 1.3;">${icon.label}</span>`
-  el.addEventListener('dblclick', () => {
+  el.addEventListener('click', () => {
     if (icon.id === 'about') openAbout()
     else if (icon.id === 'help') openHelp()
     else openFolder(icon.id, icon.label)
