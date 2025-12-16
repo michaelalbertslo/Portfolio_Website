@@ -45,6 +45,10 @@
               { "label": "GitHub Repo", "href": "https://github.com/michaelalbertslo/DuckWild" },
               { "label": "ClusterDuck Protocol", "href": "https://clusterduckprotocol.org/" }
             ]
+          },
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/mid_point_report_duckwild.pdf"
           }
         }
       },
@@ -136,7 +140,7 @@
         "type": "folder",
         "meta": {
           "date": "May 2024",
-          "category": "hardware"
+          "category": "computer architecture"
         },
         "children": {
           "README": {
@@ -150,26 +154,9 @@
             "type": "text",
             "content": "# RISC-V Processor Design (Basys3)\n\n## Project Scope\n\nDesigned and implemented a fully functional RISC-V processor from scratch using Verilog HDL, targeting the Basys3 FPGA development board.\n\n## Architecture Features\n\n### Pipeline\n5-stage pipeline: **IF** → **ID** → **EX** → **MEM** → **WB**\n\n### Hazard Handling\n- Full hazard detection and forwarding unit\n- Branch prediction with Branch Target Buffer (BTB)\n\n### Interrupts\nInterrupt controller with vectored interrupts for responsive I/O handling.\n\n### ALU\nCustom ALU supporting the complete RV32I instruction set.\n\n## Implementation Details\n\n- ~2000 lines of synthesizable Verilog\n- Timing closure achieved at **100MHz**\n- Memory-mapped I/O for UART and GPIO\n- Custom assembler and comprehensive test suite\n\n## Learning Outcomes\n\n- Deep understanding of CPU microarchitecture\n- HDL design and simulation methodology\n- FPGA timing constraints and optimization techniques"
           },
-          "Hardware Diagram.sch": {
-            "type": "hardware",
-            "graph": {
-              "nodes": [
-                { "id": "IF", "label": "Fetch" },
-                { "id": "ID", "label": "Decode" },
-                { "id": "EX", "label": "Execute" },
-                { "id": "MEM", "label": "Memory" },
-                { "id": "WB", "label": "Writeback" },
-                { "id": "REG", "label": "Reg File" }
-              ],
-              "edges": [
-                ["IF", "ID"],
-                ["ID", "EX"],
-                ["EX", "MEM"],
-                ["MEM", "WB"],
-                ["WB", "REG"],
-                ["REG", "ID"]
-              ]
-            }
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/otter_report_233.pdf"
           }
         }
       }
