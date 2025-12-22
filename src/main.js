@@ -135,15 +135,7 @@ const wallpapers = [
   },
   {
     type: 'image',
-    value: '/wallpapers/longs.jpg'
-  },
-  {
-    type: 'image',
     value: '/wallpapers/snowy_mtn.jpg'
-  },
-  {
-    type: 'image',
-    value: '/wallpapers/green.JPG'
   },
   {
     type: 'image',

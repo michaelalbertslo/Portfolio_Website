@@ -190,6 +190,23 @@ export function createBattleGame(options = {}) {
 
   const OUTSIDE_HOME_RETURN_SPAWN = { x: 367, y: 170 }
 
+  // Lab 1F (212x212 asset) scaled to canvas (493x397)
+  const LAB1F_COLLISIONS = [
+    { x: 0, y: 328, width: 51, height: 52 },
+    { x: 0, y: 0, width: 14, height: 380 },
+    { x: 12, y: 229, width: 81, height: 45 },
+    { x: 14, y: 0, width: 40, height: 141 },
+    { x: 53, y: 0, width: 70, height: 137 },
+    { x: 128, y: 0, width: 72, height: 90 },
+    { x: 199, y: 0, width: 35, height: 112 },
+    { x: 240, y: 0, width: 102, height: 124 },
+    { x: 344, y: 0, width: 79, height: 112 },
+    { x: 426, y: 0, width: 47, height: 141 },
+    { x: 244, y: 195, width: 230, height: 82 },
+    { x: 421, y: 307, width: 37, height: 73 },
+    { x: 460, y: 0, width: 12, height: 397 }
+  ]
+
   const AREA_CONFIG = {
     outside: {
       backgroundSrc: '/game_assets/New_Bark_Town_HGSS.png',
@@ -198,10 +215,11 @@ export function createBattleGame(options = {}) {
       zones: [
         {
           id: 'professor-elm',
-          type: 'message',
+          type: 'transition',
           name: 'Professor Elm Lab',
           rect: { x: 180, y: 116, width: 20, height: 10 },
-          message: 'Professor Elm is still getting the lab ready. Check back soon!'
+          target: 'lab1f',
+          targetSpawn: { x: 62, y: 171 }
         },
         {
           id: 'players-home-entry',
@@ -227,6 +245,44 @@ export function createBattleGame(options = {}) {
         }
       ],
       clickZones: []
+    },
+    lab1f: {
+      backgroundSrc: '/game_assets/lab_1f.png',
+      playerSize: { width: 17, height: 23 },
+      collisionRects: LAB1F_COLLISIONS,
+      renderSize: { width: 17, height: 23 },
+      zones: [
+        {
+          id: 'lab1f-exit',
+          type: 'transition',
+          name: 'Outside',
+          rect: { x: 112, y: 360, width: 60, height: 22 },
+          target: 'outside',
+          targetSpawn: { x: 190, y: 121 }
+        }
+      ],
+      clickZones: [
+        {
+          id: 'lab1f-computer',
+          rect: { x: 128, y: 90, width: 72, height: 34 },
+          onInteract: () => {
+            if (typeof onComputerInteract === 'function') {
+              onComputerInteract()
+            } else {
+              alert('The computer hums quietly. Nothing new to check right now.')
+            }
+          },
+          message: 'The computer hums quietly. Nothing new to check right now.'
+        },
+        {
+          id: 'lab1f-device',
+          rect: { x: 240, y: 124, width: 100, height: 34 },
+          onInteract: () => {
+            alert('The device is inactive... for now.')
+          },
+          message: 'The device is inactive... for now.'
+        }
+      ]
     },
     downstairs: {
       backgroundSrc: '/game_assets/ethan_downstairs.png',
@@ -345,10 +401,9 @@ function showZoneMessage(zone) {
   alert(text)
 }
 
-function getComputerZone() {
-  if (currentAreaKey !== 'upstairs') return null
-  const zones = currentArea?.clickZones || []
-  return zones.find(zone => zone.id === 'upstairs-computer') || null
+  function getComputerZone() {
+    const zones = currentArea?.clickZones || []
+    return zones.find(zone => zone.id && zone.id.includes('computer')) || null
 }
 
 function isPlayerNearComputer() {
@@ -521,7 +576,13 @@ function handleCanvasClick(evt) {
 
   function render() {
     ctx.imageSmoothingEnabled = false
-    if (!assetsLoaded || !currentBackground) {
+    if (
+      !assetsLoaded ||
+      !currentBackground ||
+      !(currentBackground instanceof Image) ||
+      currentBackground.naturalWidth === 0 ||
+      currentBackground.naturalHeight === 0
+    ) {
       renderLoading()
       return
     }

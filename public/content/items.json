@@ -209,6 +209,14 @@
             "links": [
               { "label": "NREL Website", "href": "https://www.nrel.gov/" }
             ]
+          },
+          "Research Poster.pdf": {
+            "type": "pdf",
+            "src": "/documents/michael_albert_poster.pdf"
+          },
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/NREL-paper.pdf"
           }
         }
       },
@@ -294,6 +302,10 @@
                 ["Battery", "Load"]
               ]
             }
+          },
+          "Summer Research Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/research_isec.pdf"
           }
         }
       },
