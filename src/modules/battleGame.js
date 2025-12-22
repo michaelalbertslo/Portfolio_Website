@@ -146,7 +146,7 @@ export function createBattleGame(options = {}) {
     { x: 120, y: 72, width: 45, height: 26 },
     { x: 150, y: 108, width: 13, height: 28 },
     { x: 116, y: 130, width: 16, height: 14 },
-    { x: 200, y: 0, width: 46, height: 132 },
+    { x: 200, y: 0, width: 46, height: 126 },
     { x: 280, y: 0, width: 213, height: 100 },
     { x: 330, y: 100, width: 15, height: 73 },
     { x: 385, y: 60, width: 116, height: 104 },
@@ -248,9 +248,9 @@ export function createBattleGame(options = {}) {
     },
     lab1f: {
       backgroundSrc: '/game_assets/lab_1f.png',
-      playerSize: { width: 17, height: 23 },
+      playerSize: { width: 34, height: 46 },
       collisionRects: LAB1F_COLLISIONS,
-      renderSize: { width: 17, height: 23 },
+      renderSize: { width: 34, height: 46 },
       zones: [
         {
           id: 'lab1f-exit',
@@ -258,7 +258,7 @@ export function createBattleGame(options = {}) {
           name: 'Outside',
           rect: { x: 112, y: 360, width: 60, height: 22 },
           target: 'outside',
-          targetSpawn: { x: 190, y: 121 }
+          targetSpawn: { x: 190, y: 155 }
         }
       ],
       clickZones: [
