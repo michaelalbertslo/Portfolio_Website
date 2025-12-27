@@ -53,8 +53,11 @@ export class WindowManager {
     // Handle move on the window element (where capture is set)
     el.addEventListener('pointermove', (e) => {
       if (!dragging || e.pointerId !== currentPointerId) return
-      el.style.left = (e.clientX - offsetX) + 'px'
-      el.style.top = (e.clientY - offsetY) + 'px'
+      const nextLeft = e.clientX - offsetX
+      const nextTop = e.clientY - offsetY
+      // Constrain so titlebar stays visible
+      el.style.left = nextLeft + 'px'
+      el.style.top = Math.max(4, nextTop) + 'px'
     })
 
     // End drag on pointerup (on window element)

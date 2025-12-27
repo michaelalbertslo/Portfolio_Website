@@ -133,6 +133,16 @@
           "Full Project Report.pdf": {
             "type": "pdf",
             "src": "/documents/CPE316-Weather-Station-Report.pdf"
+          },
+          "Prototype Image.pdf": {
+            "type": "pdf",
+            "src": "/documents/weather_image.pdf"
+          },
+          "Links.url": {
+            "type": "links",
+            "links": [
+              { "label": "Prototype Demo Video", "href": "https://youtu.be/-LeMFm8PSAs?si=ZRPHeOsYnGu1_p3v" }
+            ]
           }
         }
       },
@@ -359,9 +369,13 @@
             "", "For more details about the trip, the state of electricity in the Navajo Nation, and my takeaways, read the project details file in this folder. "
           ]
           },
-          "Activities": {
-            "type": "text",
-            "content": "# Cal Poly CPE Community Involvement\n\n## Activities\n\n- Project team participation\n- Peer mentoring in embedded systems\n- AI/ML tooling workshops\n- Informal lab organization\n\n## Areas of Focus\n\n- **Embedded systems** development\n- **FPGA** and digital design\n- **Machine learning** applications\n- Open source contributions"
+          "Gallery": {
+            "type": "gallery",
+            "imagePath": "/images/stgimages"
+          },
+          "Presentation.pdf": {
+            "type": "pdf",
+            "src": "/documents/STG_Presentation.pdf"
           }
         }
       }
