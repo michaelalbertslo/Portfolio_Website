@@ -6,6 +6,8 @@ import { createBattleGame } from './modules/battleGame.js'
 import { createHelpViewer } from './modules/helpViewer.js'
 
 const wm = new WindowManager(document.getElementById('windows'))
+// expose for modules like terminal
+window.wm = wm
 
 const GAME_BASE_WIDTH = 493
 const GAME_BASE_HEIGHT = 397
@@ -30,10 +32,10 @@ const osRoot = document.getElementById('os-root')
 const gameRoot = document.getElementById('game-root')
 
 const INTRO_MESSAGES = [
-  "Hello, I'm Michael. Welcome to my portfolio website! Click, press enter, e, or spacebar to continue.",
-  "This website is modeled after New Bark town from Pokemon Heart Gold!",
-  "Inside the starting bedroom, there is a computer. Interact with it to learn more about me!",
-  "Press continue to enter the game, press instructions if you need help navigating the website, and press the resume link if you are in a rush!"
+  "Hello, I'm Michael. Welcome to my portfolio website! Click, press enter, e, or spacebar to continue through this intro.",
+  "This website is modeled after New Bark town from Pokemon Heart Gold! You can explore and interact with the town!",
+  "Interact (Press E, Spacebar, Enter, or Click) with the blue computers in town by to learn about me!",
+  "Press continue to enter the game, press instructions if you need help navigating the website, and press the resumé link if you are in a rush!"
 ]
 
 const {
@@ -117,7 +119,11 @@ document.getElementById('shutdown').addEventListener('click', () => {
     returnToGameMode()
   }
 })
-document.getElementById('run-cmd').addEventListener('click', () => { const cmd = prompt('Type a command (try: about:bsod)'); if (cmd === 'about:bsod') showBSOD() })
+document.getElementById('run-cmd').addEventListener('click', () => {
+  import('./modules/terminal.js').then(mod => {
+    wm.openWindow(mod.createTerminal())
+  })
+})
 
 // Wallpaper configuration
 // Supports both CSS gradients and image URLs
@@ -346,7 +352,7 @@ function createIntroOverlay() {
 
   const continueBtn = createIntroButton('Continue')
   const instructionsBtn = createIntroButton('More Instructions')
-  const resumeBtn = createIntroButton('Resume', 'a')
+  const resumeBtn = createIntroButton('RESUME', 'a')
   resumeBtn.href = RESUME_PDF_PATH
   resumeBtn.target = '_blank'
   resumeBtn.rel = 'noopener noreferrer'
