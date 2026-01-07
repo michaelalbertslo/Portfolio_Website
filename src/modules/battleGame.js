@@ -219,7 +219,7 @@ export function createBattleGame(options = {}) {
           name: 'Professor Elm Lab',
           rect: { x: 180, y: 116, width: 20, height: 10 },
           target: 'lab1f',
-          targetSpawn: { x: 62, y: 171 }
+          targetSpawn: { x: 120, y: 340 }
         },
         {
           id: 'players-home-entry',
