@@ -11,13 +11,16 @@
         "children": {
           "README": {
             "type": "text",
-            "content": ["# Raspberry PiCluster-Duck Mesh Network Edge Node", 
-            "","Designing a **Raspberry Pi LoRa radio device** compatible with the Cluster‑Duck protocol from OWL Integrations.",
-            "","## Overview", "", 
-            "Building a computer‑vision pipeline on the Pi in python to send images + GPS across a mesh network for remote wildlife monitoring and conservation applications.", 
-            ""," The Cluster Duck Protol is a resilient communication infrastructure that can operate when traditional networks fail."
-            ,"The aim of this project is to expand Cluster-Duck compatability and codebase to support Raspberry Pi devices.",
-            "This will allow for the creation of a more resilient and scalable mesh networks by fellow hobbyists working on Pi."
+            "content": ["# Raspberry Pi Implementation of OWL Integration's Cluster-Duck Mesh Network Edge Node", 
+            "","Designing with a team a **Raspberry Pi** LoRa standard compatible radio device, compatible with the Cluster-Duck protocol from OWL Integrations.",
+            "The application of our device is to monitor wildlife in a remote area and send the data to a central server. This can be used for tracking migration trends, population trends, and more.",
+            "","## Project Specifics", "", 
+            "Built a state machine to control the device. States include: idle, sending, receieving, motion detected, and image processing.", 
+            "","Built an AI computer vision pipeline in Python utilizing MegaDetector and SpeciesNet to determine detected animal species with 94% accuracy.",
+            "Created a python version of the Cluster-Duck protocol for Unix devices. Cluster-Duck previously only supported microcontrollers.",
+            "The aim of this project is to expand Cluster-Duck compatability and codebase to support Raspberry Pi devices. This will allow for the creation of a more resilient and scalable mesh networks by fellow hobbyists working on Pi.",
+            "",
+            "For more details, read the full project report pdf."
           ]
           },
           "Hardware Diagram.sch": {
@@ -401,7 +404,14 @@
           },
           "B-W GWX Serveilor": {
             "type": "gallery",
-            "imagePath": "/images/gwx-serveilor"
+            "imagePath": "/images/gwx-serveilor",
+            "linkMap": {
+              "japanthumbnail.png": "https://youtu.be/Bnez8H-xQls",
+              "bayliss_thumbnail.png": "https://youtu.be/AjqucErxIKY",
+              "sword2-1-thumbnail.png": "https://youtu.be/hrPoj1IwX04",
+              "sword2-2-thumbnail.png": "https://youtu.be/58yPD_bZQnU",
+              "feeble-thumbnail.png": "https://youtu.be/X9XYf7FPEBk"
+            }
           }
         }
       },

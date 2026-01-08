@@ -427,7 +427,8 @@ export function createFileExplorer({ title, rootData, onOpenHardware, onOpenSoft
       onOpenGallery({
         title: getDisplayName(name),
         imagePath: data.imagePath,
-        path: [...currentPath, name]
+        path: [...currentPath, name],
+        linkMap: data.linkMap || {}
       })
     } else if (data.type === 'links' && data.links?.[0]) {
       window.open(data.links[0].href, '_blank')

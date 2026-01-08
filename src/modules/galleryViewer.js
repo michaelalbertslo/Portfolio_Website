@@ -1,13 +1,30 @@
 import { makeWindow } from '../os/windowManager.js'
 
-// Gallery viewer for image folders
-export function createGalleryViewer({ title, imagePath, path = [] }) {
+// Gallery viewer for media folders with optional per-item links (e.g., YouTube)
+export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} }) {
   const container = document.createElement('div')
   container.className = 'gallery-container'
   
-  let images = []
+  let mediaItems = [] // { type: 'image' | 'video', name: string, link?: string }
   let currentIndex = 0
   let isLoading = true
+
+  function toEmbedUrl(url) {
+    if (!url) return ''
+    try {
+      const u = new URL(url)
+      if (u.hostname.includes('youtu.be')) {
+        return `https://www.youtube.com/embed/${u.pathname.replace('/', '')}`
+      }
+      if (u.hostname.includes('youtube.com')) {
+        const id = u.searchParams.get('v')
+        if (id) return `https://www.youtube.com/embed/${id}`
+      }
+      return url
+    } catch {
+      return url
+    }
+  }
   
   // Render loading state
   function renderLoading() {
@@ -54,11 +71,13 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
   
   // Render gallery grid
   function renderGallery() {
-    if (images.length === 0) {
+    if (mediaItems.length === 0) {
       renderEmpty()
       return
     }
     
+    const imageCount = mediaItems.filter(m => m.type === 'image').length
+    const videoCount = mediaItems.filter(m => m.type === 'video').length
     container.innerHTML = `
       <div class="gallery-wrapper" style="
         display: flex;
@@ -76,7 +95,10 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
           gap: 12px;
           font-family: 'Segoe UI', sans-serif;
         ">
-          <span style="color: #aaa; font-size: 12px;">${images.length} image${images.length !== 1 ? 's' : ''}</span>
+          <span style="color: #aaa; font-size: 12px;">
+            ${imageCount ? `${imageCount} image${imageCount !== 1 ? 's' : ''}` : ''}
+            ${videoCount ? `${imageCount ? ' · ' : ''}${videoCount} video${videoCount !== 1 ? 's' : ''}` : ''}
+          </span>
         </div>
         
         <!-- Grid -->
@@ -89,7 +111,7 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
           gap: 12px;
           align-content: start;
         ">
-          ${images.map((img, i) => `
+          ${mediaItems.map((item, i) => `
             <div class="gallery-thumb" data-index="${i}" style="
               aspect-ratio: 1;
               border-radius: 4px;
@@ -99,11 +121,19 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
               border: 2px solid transparent;
               transition: border-color 0.15s, transform 0.15s;
             ">
-              <img src="${imagePath}/${img}" alt="${img}" style="
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-              " loading="lazy"/>
+              ${item.type === 'video'
+                ? `<video src="${imagePath}/${item.name}" muted playsinline loop style="
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    background: #000;
+                  "></video>`
+                : `<img src="${imagePath}/${item.name}" alt="${item.name}" style="
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                  " loading="lazy"/>`
+              }
             </div>
           `).join('')}
         </div>
@@ -129,7 +159,7 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
   
   // Render lightbox view
   function renderLightbox() {
-    const img = images[currentIndex]
+    const item = mediaItems[currentIndex]
     
     container.innerHTML = `
       <div class="lightbox" style="
@@ -157,11 +187,12 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
             cursor: pointer;
             font-size: 12px;
           ">← Back to Grid</button>
-          <span style="color: #888; font-size: 12px;">${currentIndex + 1} / ${images.length}</span>
-          <span style="color: #666; font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${img}</span>
+          <span style="color: #888; font-size: 12px;">${currentIndex + 1} / ${mediaItems.length}</span>
+          <span style="color: #666; font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item?.name || ''}</span>
+          ${item?.link ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" style="color:#4a90d9;font-size:12px;text-decoration:none;">Open on YouTube ↗</a>` : ''}
         </div>
         
-        <!-- Image viewer -->
+        <!-- Media viewer -->
         <div style="
           flex: 1;
           display: flex;
@@ -188,13 +219,29 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
             ">‹</button>
           ` : ''}
           
-          <img src="${imagePath}/${img}" alt="${img}" style="
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-          "/>
+          ${item?.link
+            ? `<iframe src="${toEmbedUrl(item.link)}" title="${item.name}" style="
+                width: 90%;
+                height: 90%;
+                border: 0;
+                border-radius: 6px;
+                background: #000;
+              " allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+            : item?.type === 'video'
+              ? `<video src="${imagePath}/${item.name}" controls playsinline style="
+                  max-width: 100%;
+                  max-height: 100%;
+                  object-fit: contain;
+                  background: #000;
+                "></video>`
+              : `<img src="${imagePath}/${item?.name || ''}" alt="${item?.name || ''}" style="
+                  max-width: 100%;
+                  max-height: 100%;
+                  object-fit: contain;
+                "/>`
+          }
           
-          ${currentIndex < images.length - 1 ? `
+          ${currentIndex < mediaItems.length - 1 ? `
             <button class="nav-next" style="
               position: absolute;
               right: 12px;
@@ -240,7 +287,7 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
         currentIndex--
         renderLightbox()
-      } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+      } else if (e.key === 'ArrowRight' && currentIndex < mediaItems.length - 1) {
         currentIndex++
         renderLightbox()
       } else if (e.key === 'Escape') {
@@ -256,7 +303,7 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
     }
   }
   
-  // Load images from the folder via API
+  // Load media (images/videos) from the folder via API
   async function loadImages() {
     renderLoading()
     
@@ -266,13 +313,18 @@ export function createGalleryViewer({ title, imagePath, path = [] }) {
       const response = await fetch(`/api/gallery/${folderName}`)
       if (response.ok) {
         const data = await response.json()
-        images = data.images || []
+        const images = data.images || []
+        const videos = data.videos || []
+        mediaItems = [
+          ...images.map(name => ({ type: 'image', name, link: linkMap[name] })),
+          ...videos.map(name => ({ type: 'video', name, link: linkMap[name] }))
+        ]
       } else {
-        images = []
+        mediaItems = []
       }
     } catch (err) {
       console.log('Gallery: Could not load images', err)
-      images = []
+      mediaItems = []
     }
     
     isLoading = false
