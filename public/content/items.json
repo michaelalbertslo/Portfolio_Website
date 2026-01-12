@@ -65,12 +65,14 @@
           "README": {
             "type": "text",
             "content": ["# Submersible Arduino Water Quality Sensor",
-            "Two **low‑cost weather stations** designed for underwater & environmental applications.", 
-            "", "## Features", "", "- UART interface for GPS positioning",
-             "- SPI interface to SD card storage", 
-             "- ADC for analog sensor readings", 
-             "- Periodic sampling for micro‑climate mapping", "",
-             "\nThis project demonstrates embedded systems design with a focus on power and cost efficiency.",
+            "One of two **low‑cost weather stations** designed for the Landscape Architecture department at Cal Poly SLO. The device contains a suite of sensors and takes location based data for geospacial mapping of micro-climates like rivers and lakes.", 
+            "The research that this device was designed for aims to build landscapes in a way that targets the effect of climate change on a micro-climate scale.",
+            "", "## Features", "", "- **UART** interface for GPS positioning",
+             "- **SPI** interface for SD card reads and writes", 
+             "- **ADC** for analog sensor readings (total dissolved solids, pH, temperature, and turbidity)", 
+              "",
+             "\nThis project demonstrates embedded systems design with a focus on power and cost efficiency, and ability to design to meet a client's requirements.", 
+             "I was working with students and professors with limited firmware or hardware experience, so I had to work through a lot of ambiguity and make my own design choices.  ",
             "", "For more detals, read the project details file in this folder. "]
           },
           "Hardware Diagram.sch": {
@@ -94,10 +96,16 @@
           "Full Project Report.pdf": {
             "type": "pdf",
             "src": "/documents/CPE316-Weather-Station-Report.pdf"
+          },
+          "Links.url": {
+            "type": "links",
+            "links": [
+              { "label": "The device in action!", "href": "https://www.linkedin.com/feed/update/urn:li:activity:7384687882801897472/" }
+            ]
           }
         }
       },
-      "STM Nucleo Weather Station": {
+      "STM Nucleo Atmospheric Weather Sensor": {
         "type": "folder",
         "meta": {
           "date": "Jan 2025 – Jun 2025",
@@ -105,14 +113,16 @@
         },
         "children": {
           "README": {
-            "type": "text",
-            "content": ["# STM Nucleo Weather Station",
-            "Two **low‑cost weather stations** designed for underwater & environmental applications.", 
-            "", "## Features", "", "- UART interface for GPS positioning",
-             "- SPI interface to SD card storage", 
-             "- ADC for analog sensor readings", 
-             "- Periodic sampling for micro‑climate mapping", "",
-             "\nThis project demonstrates embedded systems design with a focus on power and cost efficiency.",
+            "type": "text", 
+            "content": ["# STM Nucleo Atmospheric Weather Sensor",
+            "One of two **low‑cost weather stations** designed for the Landscape Architecture department at Cal Poly SLO. The device contains a suite of sensors and takes location based data for geospacial mapping of micro-climates like parks, cities, neighborhoods, etc.",
+            "", "## Features", "", "- **UART** interface for GPS positioning",
+             "- **SPI** interface for SD card reads and writes", 
+             "- ADC for analog sensor readings (temperature, humidity, wind speed, solar irradiance)", 
+             "",
+             "\nThis project demonstrates embedded systems design with a focus on power and cost efficiency, and ability to design to meet a client's requirements.",
+             "I was working with students and professors with limited firmware or hardware experience, so I had to work through a lot of ambiguity and make my own design choices.  ",
+             "Gained familiarity with the powerful STM Cube IDE, and plan to develop with STM in future projects like my senior project at Cal Poly.",
             "", "For more detals, read the project details file in this folder. "]
           },
           "Hardware Diagram.sch": {
@@ -190,10 +200,11 @@
             "type": "text",
             "content": ["# NREL - Software Engineering Intern",
             "", "**National Renewable Energy Laboratory** | Golden, Colorado",
-            "", "Built a full‑stack, cloud‑connected **Python/Anaconda application** to analyze Silicon PV cell characterization data.",
+            "", "Built a full‑stack, cloud‑connected **Python application** to automatically organize and analyze Silicon PV cell characterization data.",
+            "I was the only software engineer on the project, and working with a group of materials scientists researchers, so I had to work through a lot of ambiguity, establish my own sprint systems, schedule team meetings to take incremental feedback, and learn a lot about the PV cell characterization process to understand the data I was building the tool for.",
             "## Impact", "", 
             "- Routed experimental data to a cloud server, eliminating the need for manual data transfer. ",
-            "- Automated analysis process with a suite of python scripts in the GUI, allowing for automatic data visualization and extraction.",
+            "- Automated analysis process with a suite of python data analysis scripts, all built into a GUI for ease of use, allowing for automatic data visualization and extraction.",
             "Reduced cell analysis time from hours for large datasets to seconds. (6000% speedup).",
             "- Tool adopted by the Silicon PV Reserach group and still currently in use.", "", "",
             "Distributed the tool with UV package manager and wrote onboarding documentation."
