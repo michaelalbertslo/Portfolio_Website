@@ -1,4 +1,4 @@
-import{m as b}from"./index-Bjkd7MJK.js";function k({title:g,imagePath:a,path:m=[],linkMap:f={}}){const n=document.createElement("div");n.className="gallery-container";let i=[],r=0;function y(e){if(!e)return"";try{const o=new URL(e);if(o.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${o.pathname.replace("/","")}`;if(o.hostname.includes("youtube.com")){const t=o.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function u(){n.innerHTML=`
+import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[],linkMap:f={}}){const n=document.createElement("div");n.className="gallery-container";let i=[],r=0;function y(e){if(!e)return"";try{const o=new URL(e);if(o.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${o.pathname.replace("/","")}`;if(o.hostname.includes("youtube.com")){const t=o.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function u(){n.innerHTML=`
       <div style="
         display: flex;
         align-items: center;

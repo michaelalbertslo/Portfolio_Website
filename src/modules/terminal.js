@@ -1,4 +1,5 @@
 import { makeWindow } from '../os/windowManager.js'
+import { assetPath, normalizeContentTreePaths } from '../utils/assetPath.js'
 
 const PROMPT_PREFIX = 'guest@desktop-micha MINGW64'
 
@@ -280,7 +281,7 @@ export function createTerminal() {
 
   async function fortune() {
     try {
-      const res = await fetch('/documents/fortunes.txt')
+      const res = await fetch(assetPath('documents/fortunes.txt'))
       if (!res.ok) throw new Error('missing fortune file')
       const text = await res.text()
       const fortunes = text.split('%').map(s => s.trim()).filter(Boolean)
@@ -400,9 +401,10 @@ export function createTerminal() {
 
 async function loadFs() {
   try {
-    const res = await fetch('/content/items.json')
+    const res = await fetch(assetPath('content/items.json'))
     if (!res.ok) throw new Error('fs load failed')
     const data = await res.json()
+    normalizeContentTreePaths(data)
     // wrap root as folder
     const root = { type: 'folder', children: data }
     // attach to active terminal instance(s) by mutation

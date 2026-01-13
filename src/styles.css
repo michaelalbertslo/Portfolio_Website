@@ -936,7 +936,7 @@ button.px-3:active,
   position: relative;
   width: 739.5px;
   height: 595.5px;
-  background: url('/game_assets/intro_lecture_me.png') center/100% 100% no-repeat;
+  background: url('../game_assets/intro_lecture_me.png') center/100% 100% no-repeat;
   image-rendering: pixelated;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
   border-radius: 6px;

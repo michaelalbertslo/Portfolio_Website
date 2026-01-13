@@ -1,10 +1,11 @@
 import { makeWindow } from '../os/windowManager.js'
+import { assetPath } from '../utils/assetPath.js'
 
 // File type icons - using PNG images from /icons/ folder where available
 const icons = {
-  folder: `<img src="/icons/folder.png" class="w-8 h-8" alt="folder"/>`,
+  folder: `<img src="${assetPath('icons/folder.png')}" class="w-8 h-8" alt="folder"/>`,
   
-  text: `<img src="/icons/file.png" class="w-8 h-8" alt="file"/>`,
+  text: `<img src="${assetPath('icons/file.png')}" class="w-8 h-8" alt="file"/>`,
   
   hardware: `<svg viewBox="0 0 32 32" class="w-8 h-8">
     <rect x="2" y="6" width="28" height="20" rx="2" fill="#1a5f2a" stroke="#0d3d18" stroke-width="1"/>
@@ -35,7 +36,7 @@ const icons = {
     <path d="M4 24l8-8 4 4 8-10 4 6v8H4z" fill="#4ade80"/>
   </svg>`,
   
-  camera: `<img src="/icons/camera.png" class="w-8 h-8" alt="camera"/>`,
+  camera: `<img src="${assetPath('icons/camera.png')}" class="w-8 h-8" alt="camera"/>`,
   
   pdf: `<svg viewBox="0 0 32 32" class="w-8 h-8">
     <rect x="4" y="2" width="24" height="28" rx="2" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>

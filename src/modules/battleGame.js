@@ -1,4 +1,5 @@
 import { makeWindow } from '../os/windowManager.js'
+import { assetPath } from '../utils/assetPath.js'
 
 const BASE_WIDTH = 493
 const BASE_HEIGHT = 397
@@ -209,7 +210,7 @@ export function createBattleGame(options = {}) {
 
   const AREA_CONFIG = {
     outside: {
-      backgroundSrc: '/game_assets/New_Bark_Town_HGSS.png',
+      backgroundSrc: assetPath('game_assets/New_Bark_Town_HGSS.png'),
       playerSize: { width: 24, height: 30 },
       collisionRects: OUTSIDE_COLLISIONS,
       zones: [
@@ -247,7 +248,7 @@ export function createBattleGame(options = {}) {
       clickZones: []
     },
     lab1f: {
-      backgroundSrc: '/game_assets/lab_1f.png',
+      backgroundSrc: assetPath('game_assets/lab_1f.png'),
       playerSize: { width: 34, height: 46 },
       collisionRects: LAB1F_COLLISIONS,
       renderSize: { width: 34, height: 46 },
@@ -285,7 +286,7 @@ export function createBattleGame(options = {}) {
       ]
     },
     downstairs: {
-      backgroundSrc: '/game_assets/ethan_downstairs.png',
+      backgroundSrc: assetPath('game_assets/ethan_downstairs.png'),
       playerSize: { width: 32, height: 48 },
       collisionRects: DOWNSTAIRS_COLLISIONS,
       renderSize: { width: 32, height: 48 },
@@ -310,7 +311,7 @@ export function createBattleGame(options = {}) {
       clickZones: []
     },
     upstairs: {
-      backgroundSrc: '/game_assets/ethan_room.png',
+      backgroundSrc: assetPath('game_assets/ethan_room.png'),
       playerSize: { width: 32, height: 48 },
       collisionRects: UPSTAIRS_COLLISIONS,
       renderSize: { width: 32, height: 48 },
@@ -624,7 +625,7 @@ function handleCanvasClick(evt) {
     const runNames = gatherUniqueNames(RUN_FRAME_MAP)
     const frameNames = [...walkNames, ...runNames]
     const framePromises = frameNames.map(name =>
-      loadImage(`/game_assets/${name}.png`).then(img => ({ name, img }))
+      loadImage(assetPath(`game_assets/${name}.png`)).then(img => ({ name, img }))
     )
     const backgroundPromises = BACKGROUND_SOURCES.map(src =>
       loadImage(src).then(img => ({ src, img }))

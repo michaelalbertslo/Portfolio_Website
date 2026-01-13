@@ -39,6 +39,7 @@ function galleryApiPlugin() {
 }
 
 export default defineConfig({
+  base: './',
   plugins: [galleryApiPlugin()],
   server: { port: 5173, open: true },
   build: { outDir: 'dist' }

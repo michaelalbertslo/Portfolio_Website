@@ -1,11 +1,12 @@
 import { makeWindow } from '../os/windowManager.js'
+import { assetPath } from '../utils/assetPath.js'
 
 export function createAboutMe(data){
   const el = document.createElement('div')
   el.className = 'h-full about-view'
   
   // Profile image path - defaults to placeholder if not provided
-  const profileImg = data.profileImage || '/profile.png'
+  const profileImg = assetPath(data.profileImage || 'profile.png')
   
   el.innerHTML = `
     <div class="flex gap-6 h-full about-layout">

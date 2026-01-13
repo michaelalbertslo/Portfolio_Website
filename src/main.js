@@ -4,6 +4,7 @@ import { createFileExplorer } from './modules/fileExplorer.js'
 import { createAboutMe } from './modules/aboutMe.js'
 import { createBattleGame } from './modules/battleGame.js'
 import { createHelpViewer } from './modules/helpViewer.js'
+import { assetPath, normalizeContentTreePaths } from './utils/assetPath.js'
 
 const wm = new WindowManager(document.getElementById('windows'))
 // expose for modules like terminal
@@ -12,7 +13,7 @@ window.wm = wm
 const GAME_BASE_WIDTH = 493
 const GAME_BASE_HEIGHT = 397
 const GAME_SCALE = 1.5
-const RESUME_PDF_PATH = '/documents/Michael_Albert_Resume.pdf'
+const RESUME_PDF_PATH = assetPath('documents/Michael_Albert_Resume.pdf')
 
 const desktopIcons = [
   { id: 'projects', label: 'Projects', type: 'folder' },
@@ -127,34 +128,34 @@ document.getElementById('run-cmd').addEventListener('click', () => {
 
 // Wallpaper configuration
 // Supports both CSS gradients and image URLs
-// Add your images to /public/wallpapers/ and reference them as '/wallpapers/filename.jpg'
+// Add your images to /public/wallpapers/ and reference them with relative paths
 const wallpapers = [
   
   // Windows Classic
   {
     type: 'image',
-    value: '/wallpapers/windows.jpg'
+    value: assetPath('wallpapers/windows.jpg')
   },
   {
     type: 'image',
-    value: '/wallpapers/classic.jpg'
+    value: assetPath('wallpapers/classic.jpg')
   },
   {
     type: 'image',
-    value: '/wallpapers/snowy_mtn.jpg'
+    value: assetPath('wallpapers/snowy_mtn.JPG')
   },
   {
     type: 'image',
-    value: '/wallpapers/apple.jpg'
+    value: assetPath('wallpapers/apple.jpg')
   },
 
   // ========================================
   // ADD YOUR IMAGE WALLPAPERS BELOW
   // ========================================
   // Example image wallpapers (uncomment and update paths):
-  // { type: 'image', value: '/wallpapers/bliss.jpg' },
-  // { type: 'image', value: '/wallpapers/vista-aurora.jpg' },
-  // { type: 'image', value: '/wallpapers/your-custom-wallpaper.png' },
+  // { type: 'image', value: assetPath('wallpapers/bliss.jpg') },
+  // { type: 'image', value: assetPath('wallpapers/vista-aurora.jpg') },
+  // { type: 'image', value: assetPath('wallpapers/your-custom-wallpaper.png') },
 ]
 
 let currentWallpaper = 0
@@ -206,19 +207,19 @@ function showBSOD(){
 // Desktop icons - using PNG images from /icons/ folder
 function iconSVG(type){
   if (type === 'folder') {
-    return `<img src="/icons/folder.png" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="folder"/>`
+    return `<img src="${assetPath('icons/folder.png')}" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="folder"/>`
   }
   if (type === 'camera') {
-    return `<img src="/icons/camera.png" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="camera"/>`
+    return `<img src="${assetPath('icons/camera.png')}" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="camera"/>`
   }
   if (type === 'chat') {
-    return `<img src="/icons/chat.png" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="chat"/>`
+    return `<img src="${assetPath('icons/chat.png')}" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="chat"/>`
   }
   if (type === 'game') {
-    return `<img src="/icons/games.png" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="games"/>`
+    return `<img src="${assetPath('icons/games.png')}" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="games"/>`
   }
   if (type === 'help') {
-    return `<img src="/icons/help.png" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="help"/>`
+    return `<img src="${assetPath('icons/help.png')}" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="help"/>`
   }
   if (type === 'exe') {
     return `<svg viewBox="0 0 48 48" class="w-12 h-12" style='filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));'>
@@ -239,7 +240,7 @@ function iconSVG(type){
       <text x="24" y="40" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="Segoe UI, sans-serif">EXE</text>
     </svg>`
   }
-  return `<img src="/icons/file.png" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="file"/>`
+  return `<img src="${assetPath('icons/file.png')}" class="w-12 h-12" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" alt="file"/>`
 }
 
 // Predefined positions for a disorganized left-side layout
@@ -296,7 +297,8 @@ wm.onTaskbarUpdate = (items) => {
 
 // Apps
 function openFolder(id, label){
-  fetch('/content/items.json').then(r=>r.json()).then(data => {
+  fetch(assetPath('content/items.json')).then(r=>r.json()).then(data => {
+    normalizeContentTreePaths(data)
     const rootData = data[id] || { type: 'folder', children: {} }
     const win = createFileExplorer({ 
       title: label, 
@@ -330,7 +332,14 @@ function openFolder(id, label){
     wm.openWindow(win)
   })
 }
-function openAbout(){ fetch('/content/about.json').then(r=>r.json()).then(data => wm.openWindow(createAboutMe(data))) }
+function openAbout(){
+  fetch(assetPath('content/about.json'))
+    .then(r=>r.json())
+    .then(data => {
+      const profileImage = data.profileImage || 'profile.png'
+      wm.openWindow(createAboutMe({ ...data, profileImage: assetPath(profileImage) }))
+    })
+}
 function openHelp(){ wm.openWindow(createHelpViewer()) }
 
 function createIntroOverlay() {
