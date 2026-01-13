@@ -1,4 +1,4 @@
-import{m as o}from"./index-Bjkd7MJK.js";function r({title:e,src:i}){const t=document.createElement("div");return t.className="h-full flex flex-col pdf-viewer",t.innerHTML=`
+import{m as o}from"./index-Df5W57sZ.js";function r({title:e,src:i}){const t=document.createElement("div");return t.className="h-full flex flex-col pdf-viewer",t.innerHTML=`
     <!-- Toolbar -->
     <div style="
       background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
