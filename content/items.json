@@ -1,0 +1,448 @@
+{
+  "projects": {
+    "type": "folder",
+    "children": {
+      "Cluster-Duck Mesh Network": {
+        "type": "folder",
+        "meta": {
+          "date": "Sep 2025 – Present",
+          "category": "Embedded Systems"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# Raspberry Pi Implementation of OWL Integration's Cluster-Duck Mesh Network Edge Node", 
+            "","Designing with a team a **Raspberry Pi** LoRa standard compatible radio device, compatible with the Cluster-Duck protocol from OWL Integrations.",
+            "The application of our device is to monitor wildlife in a remote area and send the data to a central server. This can be used for tracking migration trends, population trends, and more.",
+            "","## Project Specifics", "", 
+            "Built a state machine to control the device. States include: idle, sending, receieving, motion detected, and image processing.", 
+            "","Built an AI computer vision pipeline in Python utilizing MegaDetector and SpeciesNet to determine detected animal species with 94% accuracy.",
+            "Created a python version of the Cluster-Duck protocol for Unix devices. Cluster-Duck previously only supported microcontrollers.",
+            "The aim of this project is to expand Cluster-Duck compatability and codebase to support Raspberry Pi devices. This will allow for the creation of a more resilient and scalable mesh networks by fellow hobbyists working on Pi.",
+            "",
+            "For more details, read the full project report pdf."
+          ]
+          },
+          "Hardware Diagram.sch": {
+            "type": "hardware",
+            "graph": {
+              "nodes": [
+                { "id": "Pi", "label": "Raspberry Pi" },
+                { "id": "LoRa", "label": "LoRa Radio" },
+                { "id": "CV", "label": "Computer Vision" },
+                { "id": "Mesh", "label": "Mesh Net" },
+                { "id": "GPS", "label": "GPS Module" }
+              ],
+              "edges": [
+                ["Pi", "LoRa"],
+                ["Pi", "CV"],
+                ["Pi", "GPS"],
+                ["LoRa", "Mesh"],
+                ["CV", "Mesh"]
+              ]
+            }
+          },
+          "Links.url": {
+            "type": "links",
+            "links": [
+              { "label": "GitHub Repo", "href": "https://github.com/michaelalbertslo/DuckWild" },
+              { "label": "ClusterDuck Protocol", "href": "https://clusterduckprotocol.org/" }
+            ]
+          },
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/mid_point_report_duckwild.pdf"
+          }
+        }
+      },
+      "Submersible Arduino Water Quality Sensor": {
+        "type": "folder",
+        "meta": {
+          "date": "Jan 2025 – Jun 2025",
+          "category": "Embedded Systems"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# Submersible Arduino Water Quality Sensor",
+            "One of two **low‑cost weather stations** designed for the Landscape Architecture department at Cal Poly SLO. The device contains a suite of sensors and takes location based data for geospacial mapping of micro-climates like rivers and lakes.", 
+            "The research that this device was designed for aims to build landscapes in a way that targets the effect of climate change on a micro-climate scale.",
+            "", "## Features", "", "- **UART** interface for GPS positioning",
+             "- **SPI** interface for SD card reads and writes", 
+             "- **ADC** for analog sensor readings (total dissolved solids, pH, temperature, and turbidity)", 
+              "",
+             "\nThis project demonstrates embedded systems design with a focus on power and cost efficiency, and ability to design to meet a client's requirements.", 
+             "I was working with students and professors with limited firmware or hardware experience, so I had to work through a lot of ambiguity and make my own design choices.  ",
+            "", "For more detals, read the project details file in this folder. "]
+          },
+          "Hardware Diagram.sch": {
+            "type": "hardware",
+            "graph": {
+              "nodes": [
+                { "id": "STM32", "label": "STM32 MCU" },
+                { "id": "Sensors", "label": "Env Sensors" },
+                { "id": "GPS", "label": "GPS Module" },
+                { "id": "SD", "label": "SD Card" },
+                { "id": "Power", "label": "Power Mgmt" }
+              ],
+              "edges": [
+                ["STM32", "Sensors"],
+                ["STM32", "GPS"],
+                ["STM32", "SD"],
+                ["Power", "STM32"]
+              ]
+            }
+          },
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/CPE316-Weather-Station-Report.pdf"
+          },
+          "Links.url": {
+            "type": "links",
+            "links": [
+              { "label": "The device in action!", "href": "https://www.linkedin.com/feed/update/urn:li:activity:7384687882801897472/" }
+            ]
+          }
+        }
+      },
+      "STM Nucleo Atmospheric Weather Sensor": {
+        "type": "folder",
+        "meta": {
+          "date": "Jan 2025 – Jun 2025",
+          "category": "Embedded Systems"
+        },
+        "children": {
+          "README": {
+            "type": "text", 
+            "content": ["# STM Nucleo Atmospheric Weather Sensor",
+            "One of two **low‑cost weather stations** designed for the Landscape Architecture department at Cal Poly SLO. The device contains a suite of sensors and takes location based data for geospacial mapping of micro-climates like parks, cities, neighborhoods, etc.",
+            "", "## Features", "", "- **UART** interface for GPS positioning",
+             "- **SPI** interface for SD card reads and writes", 
+             "- ADC for analog sensor readings (temperature, humidity, wind speed, solar irradiance)", 
+             "",
+             "\nThis project demonstrates embedded systems design with a focus on power and cost efficiency, and ability to design to meet a client's requirements.",
+             "I was working with students and professors with limited firmware or hardware experience, so I had to work through a lot of ambiguity and make my own design choices.  ",
+             "Gained familiarity with the powerful STM Cube IDE, and plan to develop with STM in future projects like my senior project at Cal Poly.",
+            "", "For more detals, read the project details file in this folder. "]
+          },
+          "Hardware Diagram.sch": {
+            "type": "hardware",
+            "graph": {
+              "nodes": [
+                { "id": "STM32", "label": "STM32 MCU" },
+                { "id": "Sensors", "label": "Env Sensors" },
+                { "id": "GPS", "label": "GPS Module" },
+                { "id": "SD", "label": "SD Card" },
+                { "id": "Power", "label": "Power Mgmt" }
+              ],
+              "edges": [
+                ["STM32", "Sensors"],
+                ["STM32", "GPS"],
+                ["STM32", "SD"],
+                ["Power", "STM32"]
+              ]
+            }
+          },
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/CPE316-Weather-Station-Report.pdf"
+          },
+          "Prototype Image.pdf": {
+            "type": "pdf",
+            "src": "/documents/weather_image.pdf"
+          },
+          "Links.url": {
+            "type": "links",
+            "links": [
+              { "label": "Prototype Demo Video", "href": "https://youtu.be/-LeMFm8PSAs?si=ZRPHeOsYnGu1_p3v" }
+            ]
+          }
+        }
+      },
+      "RISC-V Processor Design": {
+        "type": "folder",
+        "meta": {
+          "date": "May 2024",
+          "category": "computer architecture"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# RISC-V Processor Design",
+            "", "Implemented a **RISC‑V CPU** with pipelining, hazard mitigation, and interrupts.", 
+            "## Highlights", "", "- Custom ALU + instruction decoder\n- Designed in **Verilog HDL**\n- Deployed on Basys3 FPGA development board",
+            "", "This project deepened my understanding of computer architecture and how programming languages are implemented in hardware."]
+          },
+          "Project Details": {
+            "type": "text",
+            "content": "# RISC-V Processor Design (Basys3)\n\n## Project Scope\n\nDesigned and implemented a fully functional RISC-V processor from scratch using Verilog HDL, targeting the Basys3 FPGA development board.\n\n## Architecture Features\n\n### Pipeline\n5-stage pipeline: **IF** → **ID** → **EX** → **MEM** → **WB**\n\n### Hazard Handling\n- Full hazard detection and forwarding unit\n- Branch prediction with Branch Target Buffer (BTB)\n\n### Interrupts\nInterrupt controller with vectored interrupts for responsive I/O handling.\n\n### ALU\nCustom ALU supporting the complete RV32I instruction set.\n\n## Implementation Details\n\n- ~2000 lines of synthesizable Verilog\n- Timing closure achieved at **100MHz**\n- Memory-mapped I/O for UART and GPIO\n- Custom assembler and comprehensive test suite\n\n## Learning Outcomes\n\n- Deep understanding of CPU microarchitecture\n- HDL design and simulation methodology\n- FPGA timing constraints and optimization techniques"
+          },
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/otter_report_233.pdf"
+          }
+        }
+      }
+    }
+  },
+  "work": {
+    "type": "folder",
+    "children": {
+      "NREL - Software Engineering Intern": {
+        "type": "folder",
+        "meta": {
+          "date": "Jun 2025 – Sep 2025",
+          "location": "Golden, CO",
+          "category": "software"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# NREL - Software Engineering Intern",
+            "", "**National Renewable Energy Laboratory** | Golden, Colorado",
+            "", "Built a full‑stack, cloud‑connected **Python application** to automatically organize and analyze Silicon PV cell characterization data.",
+            "I was the only software engineer on the project, and working with a group of materials scientists researchers, so I had to work through a lot of ambiguity, establish my own sprint systems, schedule team meetings to take incremental feedback, and learn a lot about the PV cell characterization process to understand the data I was building the tool for.",
+            "## Impact", "", 
+            "- Routed experimental data to a cloud server, eliminating the need for manual data transfer. ",
+            "- Automated analysis process with a suite of python data analysis scripts, all built into a GUI for ease of use, allowing for automatic data visualization and extraction.",
+            "Reduced cell analysis time from hours for large datasets to seconds. (6000% speedup).",
+            "- Tool adopted by the Silicon PV Reserach group and still currently in use.", "", "",
+            "Distributed the tool with UV package manager and wrote onboarding documentation."
+          ]
+          },
+          "Software Architecture.flow": {
+            "type": "software",
+            "graph": {
+              "nodes": [
+                { "id": "UI", "label": "Desktop UI" },
+                { "id": "Analysis", "label": "Analysis Engine" },
+                { "id": "Cloud", "label": "Cloud Storage" },
+                { "id": "Data", "label": "PV Cell Data" },
+                { "id": "Reports", "label": "Report Gen" }
+              ],
+              "edges": [
+                ["UI", "Analysis"],
+                ["Analysis", "Data"],
+                ["Analysis", "Cloud"],
+                ["Analysis", "Reports"]
+              ]
+            }
+          },
+          "Links.url": {
+            "type": "links",
+            "links": [
+              { "label": "NREL Website", "href": "https://www.nrel.gov/" }
+            ]
+          },
+          "Research Poster.pdf": {
+            "type": "pdf",
+            "src": "/documents/michael_albert_poster.pdf"
+          },
+          "Full Project Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/NREL-paper.pdf"
+          }
+        }
+      },
+      "Blue Steel AI - Software Engineer": {
+        "type": "folder",
+        "meta": {
+          "date": "Jul 2025 – Present",
+          "location": "Remote",
+          "category": "software"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# Blue Steel AI - Software Engineer",
+            "", "**AI Consulting** | Remote Position",
+            "", "Developing a **multi‑platform CRM** with integrated AI tools for web, iOS, and Google Play.",
+            "## Key Work", "", "- Engineering LLM agents with RAG + vector databases",
+            "- Building preprocessing pipelines",
+            "- Retrieval optimization layers", 
+            "- Search engine optimization", "",
+            "Look into the job details file for speific client projects and outcomes."
+          ]
+          },
+          "Job Details": {
+            "type": "text",
+            "content": "# Blue Steel AI Consulting - Software Engineer\n\nRemote | July 2025 - Present\n\n## Role & Responsibilities\n\n- Full-stack development of multi-platform CRM\n- LLM agent development and optimization\n- RAG pipeline architecture and implementation\n- Vector database design and optimization\n\n## Technical Stack\n\n### Frontend\n- React for web application\n- React Native for iOS and Android\n\n### Backend\n- Node.js and Python services\n\n### AI/ML\n- LangChain for agent orchestration\n- OpenAI and Anthropic API integration\n\n### Databases\n- PostgreSQL for relational data\n- Pinecone and Weaviate for vector search\n\n### Cloud\n- AWS infrastructure\n- Vercel for frontend deployment\n\n## Key Projects\n\n- Built custom RAG pipeline with **95% retrieval accuracy**\n- Implemented multi-modal AI agents for customer support\n- Designed preprocessing pipelines for document ingestion"
+          },
+          "Software Architecture.flow": {
+            "type": "software",
+            "graph": {
+              "nodes": [
+                { "id": "Web", "label": "Web App" },
+                { "id": "Mobile", "label": "Mobile Apps" },
+                { "id": "API", "label": "API Layer" },
+                { "id": "LLM", "label": "LLM Agents" },
+                { "id": "Vector", "label": "Vector DB" },
+                { "id": "RAG", "label": "RAG Pipeline" }
+              ],
+              "edges": [
+                ["Web", "API"],
+                ["Mobile", "API"],
+                ["API", "LLM"],
+                ["LLM", "RAG"],
+                ["RAG", "Vector"]
+              ]
+            }
+          }
+        }
+      },
+      "Cal Poly Frost SURP - Research": {
+        "type": "folder",
+        "meta": {
+          "date": "Mar 2024 – Present",
+          "location": "San Luis Obispo, CA",
+          "category": "hardware"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# Cal Poly Frost SURP",
+            "", "**Summer Undergraduate Research Program and Additional Study**",
+            "", "Open‑source, cost‑optimized **DC/DC circuits** for solar electric cooking systems.",
+            "## Results", "", "- Achieved **~96% cost reduction** compared to on market commercial solutions",
+            "- Validated the circuit using LTspice and laboratory equipment like oscilloscopes and sourcementers.",
+            "- Open-sourced all designs",
+            "- A major focus of this project was international collaboration. We designed a product that is afforable and manufacturable by the world's poorest communities.",
+            "", "", "For more detals, read the research details file in this folder. "]
+          },
+          "Hardware Diagram.sch": {
+            "type": "hardware",
+            "graph": {
+              "nodes": [
+                { "id": "Solar", "label": "Solar Panel" },
+                { "id": "MPPT", "label": "MPPT Controller" },
+                { "id": "DCDC", "label": "DC/DC Converter" },
+                { "id": "Battery", "label": "Battery" },
+                { "id": "Load", "label": "Load" }
+              ],
+              "edges": [
+                ["Solar", "MPPT"],
+                ["MPPT", "DCDC"],
+                ["DCDC", "Battery"],
+                ["Battery", "Load"]
+              ]
+            }
+          },
+          "Summer Research Report.pdf": {
+            "type": "pdf",
+            "src": "/documents/research_isec.pdf"
+          }
+        }
+      },
+      "SLO Climate Coalition: Home Energy Advisor": {
+        "type": "folder",
+        "meta": {
+          "date": "Sep 2024 – Present",
+          "location": "San Luis Obispo, CA",
+          "category": "non-profit / community action"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# SLO Climate Coalition: Home Energy Advisor",
+            "", "SLO Climate Coalition is a non-profit organization that is dedicated to reducing carbon emissions in the San Luis Obispo area.",
+            "", "I have been working on the home energy advising team since it started in September, 2024.",
+            "", "## Roles and Responsibilities", "", "- Developing internal tools in Excel to track project status, calculate project costs, and automate client rebate/incentive eligibility verification.",
+            "- Conducting home visits with clients to assess their energy usage and provide recommendations for energy efficiency improvements.",
+            "- Working with local contractors to schedule and coordinate energy efficiency upgrades.",
+            " - As an early team member, I am responsible for training new team members and writing documentation.",
+            "", "For more details and project results, read the project details file in this folder. "
+          ]
+          },
+          "Links.url": {
+            "type": "links",
+            "links": [
+              { "label": "Home Energy Advising Website", "href": "https://sloclimatecoalition.org/hea/" },
+              {"label": "SLO Climate Coalition Website", "href": "https://sloclimatecoalition.org/"}
+            ]
+          }
+        }
+      }
+    }
+  },
+  "involvement": {
+    "type": "folder",
+    "children": {
+      "Skip The Grid": {
+        "type": "folder",
+        "meta": {
+          "date": "2024 – Present",
+          "category": "community"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": ["# Skip The Grid",
+            "", "Participated in Cal Poly's Skip The Grid trip in Spring 2025, and plan to attend again in Spring 2026.",
+            "Skip The Grid is a collaborative service trip between Cal Poly Construction Management, Heart of America, Solv Energy, and Nextracker.",
+            "The 2025 trip provided solar electric systems, lights, and refrigerators to over 60 families and over 100 children in the Navajo Nation.",
+            "", "For more details about the trip, the state of electricity in the Navajo Nation, and my takeaways, read the project details file in this folder. "
+          ]
+          },
+          "Gallery": {
+            "type": "gallery",
+            "imagePath": "/images/stgimages"
+          },
+          "Presentation.pdf": {
+            "type": "pdf",
+            "src": "/documents/STG_Presentation.pdf"
+          }
+        }
+      }
+    }
+  },
+  "photography": {
+    "type": "folder",
+    "children": {
+      "Circuit Bent Photography": {
+        "type": "folder",
+        "meta": {
+          "date": "Ongoing",
+          "category": "creative"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": "# Circuit Bent Photography\n\nA collection of images shot on modified and unconventional cameras.\n\n## Cameras\n\n- Canon 5.0MP\n- B/W GWX Serveilor"
+          },
+          "Canon 5.0MP": {
+            "type": "gallery",
+            "imagePath": "/images/canon-5mp"
+          },
+          "B-W GWX Serveilor": {
+            "type": "gallery",
+            "imagePath": "/images/gwx-serveilor",
+            "linkMap": {
+              "japanthumbnail.png": "https://youtu.be/Bnez8H-xQls",
+              "bayliss_thumbnail.png": "https://youtu.be/AjqucErxIKY",
+              "sword2-1-thumbnail.png": "https://youtu.be/hrPoj1IwX04",
+              "sword2-2-thumbnail.png": "https://youtu.be/58yPD_bZQnU",
+              "feeble-thumbnail.png": "https://youtu.be/X9XYf7FPEBk"
+            }
+          }
+        }
+      },
+      "Digital Photography": {
+        "type": "folder",
+        "meta": {
+          "date": "Ongoing",
+          "category": "creative"
+        },
+        "children": {
+          "README": {
+            "type": "text",
+            "content": "# Photography\n\nA collection of **film and digital** photography work.\n\n*Gallery coming soon!*\n\nFor now, enjoy the retro OS vibes."
+          },
+          "About": {
+            "type": "text",
+            "content": "# Photography\n\nI shoot both film and digital, with a preference for:\n\n- Street photography\n- Landscapes\n- Architecture\n- Abstract compositions\n\n## Cameras\n\n- Various 35mm film cameras\n- Digital mirrorless\n\n---\n\n*Gallery updates coming soon!*"
+          }
+        }
+      }
+    }
+  }
+}
