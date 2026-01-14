@@ -1,4 +1,5 @@
 import { makeWindow } from '../os/windowManager.js'
+import { assetPath } from '../utils/assetPath.js'
 
 // Gallery viewer for media folders with optional per-item links (e.g., YouTube)
 export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} }) {
@@ -122,13 +123,13 @@ export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} 
               transition: border-color 0.15s, transform 0.15s;
             ">
               ${item.type === 'video'
-                ? `<video src="${imagePath}/${item.name}" muted playsinline loop style="
+                ? `<video src="${item.src}" muted playsinline loop style="
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
                     background: #000;
                   "></video>`
-                : `<img src="${imagePath}/${item.name}" alt="${item.name}" style="
+                : `<img src="${item.src}" alt="${item.name}" style="
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
@@ -220,7 +221,7 @@ export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} 
           ` : ''}
           
           ${item?.link
-            ? `<iframe src="${toEmbedUrl(item.link)}" title="${item.name}" style="
+              ? `<iframe src="${toEmbedUrl(item.link)}" title="${item.name}" style="
                 width: 90%;
                 height: 90%;
                 border: 0;
@@ -228,13 +229,13 @@ export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} 
                 background: #000;
               " allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
             : item?.type === 'video'
-              ? `<video src="${imagePath}/${item.name}" controls playsinline style="
+              ? `<video src="${item.src}" controls playsinline style="
                   max-width: 100%;
                   max-height: 100%;
                   object-fit: contain;
                   background: #000;
                 "></video>`
-              : `<img src="${imagePath}/${item?.name || ''}" alt="${item?.name || ''}" style="
+              : `<img src="${item.src}" alt="${item?.name || ''}" style="
                   max-width: 100%;
                   max-height: 100%;
                   object-fit: contain;
@@ -303,30 +304,50 @@ export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} 
     }
   }
   
-  // Load media (images/videos) from the folder via API
+  // Load media (images/videos) from manifest (static) or dev API fallback
   async function loadImages() {
     renderLoading()
-    
+
+    const folderName = imagePath.split('/').filter(Boolean).pop()
+    const manifestUrl = assetPath('images-manifest.json')
+    const normalizedBase = assetPath(imagePath.startsWith('/') ? imagePath.slice(1) : imagePath)
+    const normalizeMedia = (names) => names.map((name) => ({
+      type: name.match(/\.(mp4|webm)$/i) ? 'video' : 'image',
+      name,
+      src: `${normalizedBase}/${name}`,
+      link: linkMap[name]
+    }))
+
     try {
-      // Extract folder name from imagePath (e.g., "/images/canon-5mp" -> "canon-5mp")
-      const folderName = imagePath.split('/').filter(Boolean).pop()
-      const response = await fetch(`/api/gallery/${folderName}`)
+      // Try static manifest first (works on GitHub Pages)
+      const response = await fetch(manifestUrl)
       if (response.ok) {
         const data = await response.json()
-        const images = data.images || []
-        const videos = data.videos || []
-        mediaItems = [
-          ...images.map(name => ({ type: 'image', name, link: linkMap[name] })),
-          ...videos.map(name => ({ type: 'video', name, link: linkMap[name] }))
-        ]
-      } else {
-        mediaItems = []
+        const names = data[folderName] || []
+        mediaItems = normalizeMedia(names)
       }
     } catch (err) {
-      console.log('Gallery: Could not load images', err)
-      mediaItems = []
+      console.log('Gallery: Could not load manifest', err)
     }
-    
+
+    // Dev fallback to API if manifest missing
+    if (!mediaItems.length) {
+      try {
+        const response = await fetch(`/api/gallery/${folderName}`)
+        if (response.ok) {
+          const data = await response.json()
+          const images = data.images || []
+          const videos = data.videos || []
+          mediaItems = [
+            ...images.map(name => ({ type: 'image', name, src: `${normalizedBase}/${name}`, link: linkMap[name] })),
+            ...videos.map(name => ({ type: 'video', name, src: `${normalizedBase}/${name}`, link: linkMap[name] }))
+          ]
+        }
+      } catch (err) {
+        console.log('Gallery: Could not load images from API', err)
+      }
+    }
+
     isLoading = false
     renderGallery()
   }

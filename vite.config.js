@@ -2,10 +2,36 @@ import { defineConfig } from 'vite'
 import fs from 'fs'
 import path from 'path'
 
+function generateGalleryManifest() {
+  const imagesRoot = path.join(process.cwd(), 'public', 'images')
+  const manifestPath = path.join(process.cwd(), 'public', 'images-manifest.json')
+  const imageExtensions = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.JPG', '.JPEG', '.PNG', '.GIF', '.WEBP', '.mp4', '.webm'])
+
+  const manifest = {}
+  if (fs.existsSync(imagesRoot)) {
+    const folders = fs.readdirSync(imagesRoot, { withFileTypes: true })
+    folders.forEach((entry) => {
+      if (!entry.isDirectory()) return
+      const folderName = entry.name
+      const folderPath = path.join(imagesRoot, folderName)
+      const files = fs.readdirSync(folderPath, { withFileTypes: true })
+      const media = files
+        .filter((f) => f.isFile() && imageExtensions.has(path.extname(f.name)))
+        .map((f) => f.name)
+      manifest[folderName] = media
+    })
+  }
+
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2))
+}
+
 // Plugin to serve gallery image listings during development
 function galleryApiPlugin() {
   return {
     name: 'gallery-api',
+    buildStart() {
+      generateGalleryManifest()
+    },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         // Handle /api/gallery/:folder requests
