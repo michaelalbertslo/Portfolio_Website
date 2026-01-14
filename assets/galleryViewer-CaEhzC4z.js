@@ -1,4 +1,4 @@
-import{m as $,a as u}from"./index-bPVaF8Ld.js";function E({title:v,imagePath:c,path:k=[],linkMap:f={}}){const n=document.createElement("div");n.className="gallery-container";let r=[],a=0;function x(e){if(!e)return"";try{const i=new URL(e);if(i.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${i.pathname.replace("/","")}`;if(i.hostname.includes("youtube.com")){const t=i.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function m(){n.innerHTML=`
+import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,path:k=[],linkMap:f={}}){const n=document.createElement("div");n.className="gallery-container";let r=[],a=0;function x(e){if(!e)return"";try{const i=new URL(e);if(i.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${i.pathname.replace("/","")}`;if(i.hostname.includes("youtube.com")){const t=i.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function m(){n.innerHTML=`
       <div style="
         display: flex;
         align-items: center;
