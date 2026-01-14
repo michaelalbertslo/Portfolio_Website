@@ -1,4 +1,4 @@
-import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[],linkMap:f={}}){const n=document.createElement("div");n.className="gallery-container";let i=[],r=0;function y(e){if(!e)return"";try{const o=new URL(e);if(o.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${o.pathname.replace("/","")}`;if(o.hostname.includes("youtube.com")){const t=o.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function u(){n.innerHTML=`
+import{m as $,a as u}from"./index-bPVaF8Ld.js";function E({title:v,imagePath:c,path:k=[],linkMap:f={}}){const n=document.createElement("div");n.className="gallery-container";let r=[],a=0;function x(e){if(!e)return"";try{const i=new URL(e);if(i.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${i.pathname.replace("/","")}`;if(i.hostname.includes("youtube.com")){const t=i.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function m(){n.innerHTML=`
       <div style="
         display: flex;
         align-items: center;
@@ -13,7 +13,7 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
           <div>Loading images...</div>
         </div>
       </div>
-    `}function v(){n.innerHTML=`
+    `}function h(){n.innerHTML=`
       <div style="
         display: flex;
         align-items: center;
@@ -27,11 +27,11 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
           <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">📷</div>
           <div style="font-size: 14px;">No images found</div>
           <div style="font-size: 12px; margin-top: 8px; color: #666;">
-            Add images to: public${a}
+            Add images to: public${c}
           </div>
         </div>
       </div>
-    `}function p(){if(i.length===0){v();return}const e=i.filter(t=>t.type==="image").length,o=i.filter(t=>t.type==="video").length;n.innerHTML=`
+    `}function g(){if(r.length===0){h();return}const e=r.filter(t=>t.type==="image").length,i=r.filter(t=>t.type==="video").length;n.innerHTML=`
       <div class="gallery-wrapper" style="
         display: flex;
         flex-direction: column;
@@ -50,7 +50,7 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
         ">
           <span style="color: #aaa; font-size: 12px;">
             ${e?`${e} image${e!==1?"s":""}`:""}
-            ${o?`${e?" · ":""}${o} video${o!==1?"s":""}`:""}
+            ${i?`${e?" · ":""}${i} video${i!==1?"s":""}`:""}
           </span>
         </div>
         
@@ -64,8 +64,8 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
           gap: 12px;
           align-content: start;
         ">
-          ${i.map((t,s)=>`
-            <div class="gallery-thumb" data-index="${s}" style="
+          ${r.map((t,d)=>`
+            <div class="gallery-thumb" data-index="${d}" style="
               aspect-ratio: 1;
               border-radius: 4px;
               overflow: hidden;
@@ -74,12 +74,12 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
               border: 2px solid transparent;
               transition: border-color 0.15s, transform 0.15s;
             ">
-              ${t.type==="video"?`<video src="${a}/${t.name}" muted playsinline loop style="
+              ${t.type==="video"?`<video src="${t.src}" muted playsinline loop style="
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
                     background: #000;
-                  "></video>`:`<img src="${a}/${t.name}" alt="${t.name}" style="
+                  "></video>`:`<img src="${t.src}" alt="${t.name}" style="
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
@@ -88,7 +88,7 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
           `).join("")}
         </div>
       </div>
-    `,n.querySelectorAll(".gallery-thumb").forEach(t=>{t.addEventListener("click",()=>{r=parseInt(t.dataset.index),l()}),t.addEventListener("mouseenter",()=>{t.style.borderColor="#4a90d9",t.style.transform="scale(1.02)"}),t.addEventListener("mouseleave",()=>{t.style.borderColor="transparent",t.style.transform="scale(1)"})})}function l(){const e=i[r];n.innerHTML=`
+    `,n.querySelectorAll(".gallery-thumb").forEach(t=>{t.addEventListener("click",()=>{a=parseInt(t.dataset.index),p()}),t.addEventListener("mouseenter",()=>{t.style.borderColor="#4a90d9",t.style.transform="scale(1.02)"}),t.addEventListener("mouseleave",()=>{t.style.borderColor="transparent",t.style.transform="scale(1)"})})}function p(){const e=r[a];n.innerHTML=`
       <div class="lightbox" style="
         display: flex;
         flex-direction: column;
@@ -114,7 +114,7 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
             cursor: pointer;
             font-size: 12px;
           ">← Back to Grid</button>
-          <span style="color: #888; font-size: 12px;">${r+1} / ${i.length}</span>
+          <span style="color: #888; font-size: 12px;">${a+1} / ${r.length}</span>
           <span style="color: #666; font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${(e==null?void 0:e.name)||""}</span>
           ${e!=null&&e.link?`<a href="${e.link}" target="_blank" rel="noopener noreferrer" style="color:#4a90d9;font-size:12px;text-decoration:none;">Open on YouTube ↗</a>`:""}
         </div>
@@ -128,7 +128,7 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
           position: relative;
           overflow: hidden;
         ">
-          ${r>0?`
+          ${a>0?`
             <button class="nav-prev" style="
               position: absolute;
               left: 12px;
@@ -146,24 +146,24 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
             ">‹</button>
           `:""}
           
-          ${e!=null&&e.link?`<iframe src="${y(e.link)}" title="${e.name}" style="
+          ${e!=null&&e.link?`<iframe src="${x(e.link)}" title="${e.name}" style="
                 width: 90%;
                 height: 90%;
                 border: 0;
                 border-radius: 6px;
                 background: #000;
-              " allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`:(e==null?void 0:e.type)==="video"?`<video src="${a}/${e.name}" controls playsinline style="
+              " allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`:(e==null?void 0:e.type)==="video"?`<video src="${e.src}" controls playsinline style="
                   max-width: 100%;
                   max-height: 100%;
                   object-fit: contain;
                   background: #000;
-                "></video>`:`<img src="${a}/${(e==null?void 0:e.name)||""}" alt="${(e==null?void 0:e.name)||""}" style="
+                "></video>`:`<img src="${e.src}" alt="${(e==null?void 0:e.name)||""}" style="
                   max-width: 100%;
                   max-height: 100%;
                   object-fit: contain;
                 "/>`}
           
-          ${r<i.length-1?`
+          ${a<r.length-1?`
             <button class="nav-next" style="
               position: absolute;
               right: 12px;
@@ -182,8 +182,8 @@ import{m as b}from"./index-Df5W57sZ.js";function k({title:g,imagePath:a,path:m=[
           `:""}
         </div>
       </div>
-    `,n.querySelector(".back-to-grid").addEventListener("click",p);const o=n.querySelector(".nav-prev"),t=n.querySelector(".nav-next");o&&o.addEventListener("click",()=>{r--,l()}),t&&t.addEventListener("click",()=>{r++,l()});const s=d=>{d.key==="ArrowLeft"&&r>0?(r--,l()):d.key==="ArrowRight"&&r<i.length-1?(r++,l()):d.key==="Escape"&&p()};document.addEventListener("keydown",s),n._cleanupKeyboard=()=>{document.removeEventListener("keydown",s)}}async function x(){u();try{const e=a.split("/").filter(Boolean).pop(),o=await fetch(`/api/gallery/${e}`);if(o.ok){const t=await o.json(),s=t.images||[],d=t.videos||[];i=[...s.map(c=>({type:"image",name:c,link:f[c]})),...d.map(c=>({type:"video",name:c,link:f[c]}))]}else i=[]}catch(e){console.log("Gallery: Could not load images",e),i=[]}p()}return x(),b({title:g,body:n,width:650,height:500,icon:`<svg viewBox="0 0 32 32" class="w-8 h-8">
+    `,n.querySelector(".back-to-grid").addEventListener("click",g);const i=n.querySelector(".nav-prev"),t=n.querySelector(".nav-next");i&&i.addEventListener("click",()=>{a--,p()}),t&&t.addEventListener("click",()=>{a++,p()});const d=o=>{o.key==="ArrowLeft"&&a>0?(a--,p()):o.key==="ArrowRight"&&a<r.length-1?(a++,p()):o.key==="Escape"&&g()};document.addEventListener("keydown",d),n._cleanupKeyboard=()=>{document.removeEventListener("keydown",d)}}async function b(){m();const e=c.split("/").filter(Boolean).pop(),i=u("images-manifest.json"),t=u(c.startsWith("/")?c.slice(1):c),d=o=>o.map(s=>({type:s.match(/\.(mp4|webm)$/i)?"video":"image",name:s,src:`${t}/${s}`,link:f[s]}));try{const o=await fetch(i);if(o.ok){const y=(await o.json())[e]||[];r=d(y)}}catch(o){console.log("Gallery: Could not load manifest",o)}if(!r.length)try{const o=await fetch(`/api/gallery/${e}`);if(o.ok){const s=await o.json(),y=s.images||[],w=s.videos||[];r=[...y.map(l=>({type:"image",name:l,src:`${t}/${l}`,link:f[l]})),...w.map(l=>({type:"video",name:l,src:`${t}/${l}`,link:f[l]}))]}}catch(o){console.log("Gallery: Could not load images from API",o)}g()}return b(),$({title:v,body:n,width:650,height:500,icon:`<svg viewBox="0 0 32 32" class="w-8 h-8">
     <rect x="2" y="4" width="28" height="24" rx="2" fill="#5090c0" stroke="#2d6090" stroke-width="1"/>
     <circle cx="10" cy="12" r="3" fill="#ffd93d"/>
     <path d="M4 24l8-8 4 4 8-10 4 6v8H4z" fill="#4ade80"/>
-  </svg>`})}export{k as createGalleryViewer};
+  </svg>`})}export{E as createGalleryViewer};
