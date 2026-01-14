@@ -1,4 +1,4 @@
-import{m as o}from"./index-bPVaF8Ld.js";function r({title:e,src:i}){const t=document.createElement("div");return t.className="h-full flex flex-col pdf-viewer",t.innerHTML=`
+import{a as r,m as n}from"./index-B_DeCNZF.js";function d({title:e,src:o}){const i=r(o||""),t=document.createElement("div");return t.className="h-full flex flex-col pdf-viewer",t.innerHTML=`
     <!-- Toolbar -->
     <div style="
       background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
@@ -47,4 +47,4 @@ import{m as o}from"./index-bPVaF8Ld.js";function r({title:e,src:i}){const t=docu
         title="${e}"
       ></iframe>
     </div>
-  `,o({title:e,body:t,width:850,height:650})}export{r as createPdfViewer};
+  `,n({title:e,body:t,width:850,height:650})}export{d as createPdfViewer};

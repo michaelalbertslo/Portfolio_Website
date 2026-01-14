@@ -1,6 +1,8 @@
 import { makeWindow } from '../os/windowManager.js'
+import { assetPath } from '../utils/assetPath.js'
 
 export function createPdfViewer({ title, src }) {
+  const resolvedSrc = assetPath(src || '')
   const container = document.createElement('div')
   container.className = 'h-full flex flex-col pdf-viewer'
   
@@ -22,7 +24,7 @@ export function createPdfViewer({ title, src }) {
       <span style="font-weight: 500; color: #333;">${title}</span>
       <span style="color: #999;">— PDF Document</span>
       <div style="flex: 1;"></div>
-      <a href="${src}" target="_blank" style="
+      <a href="${resolvedSrc}" target="_blank" style="
         padding: 4px 12px;
         background: linear-gradient(180deg, #f7f7f7 0%, #e0e0e0 100%);
         border: 1px solid #999;
@@ -44,7 +46,7 @@ export function createPdfViewer({ title, src }) {
     <!-- PDF Embed -->
     <div style="flex: 1; background: #525659; position: relative;">
       <iframe 
-        src="${src}" 
+        src="${resolvedSrc}" 
         style="
           width: 100%;
           height: 100%;
