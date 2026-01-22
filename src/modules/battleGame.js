@@ -90,6 +90,22 @@ export function createBattleGame(options = {}) {
   `
   interactionPrompt.textContent = 'Press E, Enter, Space, or click to interact with the computer.'
 
+  const statusToast = document.createElement('div')
+  statusToast.style.cssText = `
+    display:none;
+    margin:8px 0 0;
+    padding:8px 12px;
+    border:2px solid #8ec8ff;
+    border-radius:4px;
+    color:#eaf6ff;
+    background:rgba(16,43,74,0.9);
+    font-family:'Press Start 2P','VT323',monospace;
+    font-size:11px;
+    text-align:center;
+    letter-spacing:0.3px;
+    box-shadow:3px 3px 0 #061528;
+  `
+
   if (mode !== 'window') {
     container.style.border = 'none'
     container.style.borderRadius = '0'
@@ -100,7 +116,7 @@ export function createBattleGame(options = {}) {
     container.style.alignItems = 'center'
   }
 
-  container.append(canvas, interactionPrompt, info)
+  container.append(canvas, interactionPrompt, statusToast, info)
 
   let hostElement
   if (mode === 'window') {
@@ -270,7 +286,7 @@ export function createBattleGame(options = {}) {
             if (typeof onComputerInteract === 'function') {
               onComputerInteract()
             } else {
-              alert('The computer hums quietly. Nothing new to check right now.')
+              showToast('The computer hums quietly. Nothing new to check right now.')
             }
           },
           message: 'The computer hums quietly. Nothing new to check right now.'
@@ -279,7 +295,7 @@ export function createBattleGame(options = {}) {
           id: 'lab1f-device',
           rect: { x: 240, y: 124, width: 100, height: 34 },
           onInteract: () => {
-            alert('The device is inactive... for now.')
+            showToast('The device is inactive... for now.')
           },
           message: 'The device is inactive... for now.'
         }
@@ -333,7 +349,7 @@ export function createBattleGame(options = {}) {
             if (typeof onComputerInteract === 'function') {
               onComputerInteract()
             } else {
-              alert('The computer hums quietly. Nothing new to check right now.')
+              showToast('The computer hums quietly. Nothing new to check right now.')
             }
           },
           message: 'The computer hums quietly. Nothing new to check right now.'
@@ -397,9 +413,20 @@ function zoneAt(nx, ny) {
   return zones.find(zone => rectsOverlap(footprint, zone.rect))
 }
 
+let toastTimeout
+function showToast(text) {
+  if (!text) return
+  statusToast.textContent = text
+  statusToast.style.display = 'block'
+  if (toastTimeout) clearTimeout(toastTimeout)
+  toastTimeout = setTimeout(() => {
+    statusToast.style.display = 'none'
+  }, 3500)
+}
+
 function showZoneMessage(zone) {
   const text = zone.message || `${zone.name} is in progress. Check back soon!`
-  alert(text)
+  showToast(text)
 }
 
   function getComputerZone() {
@@ -426,7 +453,7 @@ function triggerZoneInteraction(zone) {
   if (typeof zone.onInteract === 'function') {
     zone.onInteract()
   } else {
-    alert(zone.message || 'Nothing interesting happens.')
+    showToast(zone.message || 'Nothing interesting happens.')
   }
 }
 

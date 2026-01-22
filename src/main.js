@@ -45,9 +45,12 @@ const {
   buttonsWrapper: introButtons,
   continueBtn,
   instructionsBtn,
-  resumeBtn
+  resumeBtn,
+  instructionsOverlay,
+  instructionsBackBtn
 } = createIntroOverlay()
 gameRoot.appendChild(introOverlay)
+gameRoot.appendChild(instructionsOverlay)
 
 let battleInstance = null
 let introStep = 0
@@ -95,7 +98,12 @@ continueBtn.addEventListener('click', () => {
 })
 
 instructionsBtn.addEventListener('click', () => {
-  introText.textContent = INTRO_MESSAGES[INTRO_MESSAGES.length - 1] || ''
+  introOverlay.style.display = 'none'
+  instructionsOverlay.style.display = 'flex'
+})
+instructionsBackBtn.addEventListener('click', () => {
+  instructionsOverlay.style.display = 'none'
+  introOverlay.style.display = 'flex'
 })
 
 function pad(n){return n.toString().padStart(2,'0')}
@@ -370,7 +378,88 @@ function createIntroOverlay() {
   card.append(textBox, buttons)
   overlay.append(card)
 
-  return { overlay, textBox, buttonsWrapper: buttons, continueBtn, instructionsBtn, resumeBtn }
+  const instructionsOverlay = document.createElement('div')
+  instructionsOverlay.className = 'intro-overlay'
+  instructionsOverlay.style.display = 'none'
+  instructionsOverlay.style.padding = '32px 12px 16px'
+  instructionsOverlay.innerHTML = `
+    <div style="
+      width: ${GAME_BASE_WIDTH * GAME_SCALE}px;
+      max-width: 95vw;
+      background: #0b1524;
+      border: 3px solid #8ec8ff;
+      border-radius: 6px;
+      box-shadow: 8px 8px 0 #0a1628;
+      padding: 16px;
+      color: #dbe9ff;
+      font-family: 'Press Start 2P', 'VT323', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    ">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <img src="${assetPath('game_assets/intro_lecture.png')}" alt="guide" width="48" height="48" style="image-rendering: pixelated;"/>
+        <div>
+          <div style="font-size: 14px; color: #9bd1ff;">More Instructions</div>
+        </div>
+      </div>
+
+      <div style="background: #102b4a; border: 2px solid #1f3f6a; padding: 10px; margin-bottom: 12px;">
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <img src="${assetPath('game_assets/ethan_room.png')}" alt="room" width="72" height="58" style="image-rendering: pixelated; border: 2px solid #1f3f6a;"/>
+          <div>
+            <div style="color: #ffd93d;">[Tip #1]</div>
+            <div>Use arrow keys or WASD to move. Hold Shift to run. You can leave the house and enter town by going downstairs and walking through the red doorway.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #102b4a; border: 2px solid #1f3f6a; padding: 10px; margin-bottom: 12px;">
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <img src="${assetPath('game_assets/lab_1f.png')}" alt="computer" width="72" height="58" style="image-rendering: pixelated; border: 2px solid #1f3f6a;"/>
+          <div>
+            <div style="color: #ffd93d;">[Tip #2]</div>
+            <div>Interact with blue computers to learn about my projects(press E, Enter, or Space).</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #102b4a; border: 2px solid #1f3f6a; padding: 10px; margin-bottom: 12px;">
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <img src="${assetPath('game_assets/New_Bark_Town_HGSS.png')}" alt="town" width="72" height="58" style="image-rendering: pixelated; border: 2px solid #1f3f6a;"/>
+          <div>
+            <div style="color: #ffd93d;">[Tip #3]</div>
+            <div>Explore the rest of the town. You can enter other buildings by walking through the doors. Each building has its own features.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; margin-top: 16px;">
+        <button id="instructions-back" style="
+          background: #52b82e;
+          border: 3px solid #2f6b1a;
+          border-radius: 3px;
+          padding: 8px 16px;
+          color: #0b1a0d;
+          font-weight: 400;
+          font-size: 12px;
+          box-shadow: 3px 3px 0 #061528;
+          cursor: pointer;
+        ">Back to Intro</button>
+      </div>
+    </div>
+  `
+  const instructionsBackBtn = instructionsOverlay.querySelector('#instructions-back')
+
+  return {
+    overlay,
+    textBox,
+    buttonsWrapper: buttons,
+    continueBtn,
+    instructionsBtn,
+    resumeBtn,
+    instructionsOverlay,
+    instructionsBackBtn
+  }
 }
 
 function createIntroButton(label, tag = 'button') {

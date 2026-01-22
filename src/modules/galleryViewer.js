@@ -72,6 +72,10 @@ export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} 
   
   // Render gallery grid
   function renderGallery() {
+    if (typeof container._cleanupKeyboard === 'function') {
+      container._cleanupKeyboard()
+      container._cleanupKeyboard = null
+    }
     if (mediaItems.length === 0) {
       renderEmpty()
       return
@@ -160,6 +164,10 @@ export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} 
   
   // Render lightbox view
   function renderLightbox() {
+    if (typeof container._cleanupKeyboard === 'function') {
+      container._cleanupKeyboard()
+      container._cleanupKeyboard = null
+    }
     const item = mediaItems[currentIndex]
     
     container.innerHTML = `
@@ -264,7 +272,13 @@ export function createGalleryViewer({ title, imagePath, path = [], linkMap = {} 
     `
     
     // Bind events
-    container.querySelector('.back-to-grid').addEventListener('click', renderGallery)
+    container.querySelector('.back-to-grid').addEventListener('click', () => {
+      if (typeof container._cleanupKeyboard === 'function') {
+        container._cleanupKeyboard()
+        container._cleanupKeyboard = null
+      }
+      renderGallery()
+    })
     
     const prevBtn = container.querySelector('.nav-prev')
     const nextBtn = container.querySelector('.nav-next')
