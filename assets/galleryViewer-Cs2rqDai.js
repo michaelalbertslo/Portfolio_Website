@@ -1,4 +1,4 @@
-import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,path:k=[],linkMap:f={}}){const n=document.createElement("div");n.className="gallery-container";let r=[],a=0;function x(e){if(!e)return"";try{const i=new URL(e);if(i.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${i.pathname.replace("/","")}`;if(i.hostname.includes("youtube.com")){const t=i.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function m(){n.innerHTML=`
+import{m as $,a as u}from"./index-CKQF8gEq.js";function E({title:v,imagePath:c,path:k=[],linkMap:f={}}){const o=document.createElement("div");o.className="gallery-container";let i=[],r=0;function x(e){if(!e)return"";try{const a=new URL(e);if(a.hostname.includes("youtu.be"))return`https://www.youtube.com/embed/${a.pathname.replace("/","")}`;if(a.hostname.includes("youtube.com")){const t=a.searchParams.get("v");if(t)return`https://www.youtube.com/embed/${t}`}return e}catch{return e}}function b(){o.innerHTML=`
       <div style="
         display: flex;
         align-items: center;
@@ -13,7 +13,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
           <div>Loading images...</div>
         </div>
       </div>
-    `}function h(){n.innerHTML=`
+    `}function m(){o.innerHTML=`
       <div style="
         display: flex;
         align-items: center;
@@ -31,7 +31,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
           </div>
         </div>
       </div>
-    `}function g(){if(r.length===0){h();return}const e=r.filter(t=>t.type==="image").length,i=r.filter(t=>t.type==="video").length;n.innerHTML=`
+    `}function y(){if(typeof o._cleanupKeyboard=="function"&&(o._cleanupKeyboard(),o._cleanupKeyboard=null),i.length===0){m();return}const e=i.filter(t=>t.type==="image").length,a=i.filter(t=>t.type==="video").length;o.innerHTML=`
       <div class="gallery-wrapper" style="
         display: flex;
         flex-direction: column;
@@ -50,7 +50,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
         ">
           <span style="color: #aaa; font-size: 12px;">
             ${e?`${e} image${e!==1?"s":""}`:""}
-            ${i?`${e?" · ":""}${i} video${i!==1?"s":""}`:""}
+            ${a?`${e?" · ":""}${a} video${a!==1?"s":""}`:""}
           </span>
         </div>
         
@@ -64,7 +64,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
           gap: 12px;
           align-content: start;
         ">
-          ${r.map((t,d)=>`
+          ${i.map((t,d)=>`
             <div class="gallery-thumb" data-index="${d}" style="
               aspect-ratio: 1;
               border-radius: 4px;
@@ -88,7 +88,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
           `).join("")}
         </div>
       </div>
-    `,n.querySelectorAll(".gallery-thumb").forEach(t=>{t.addEventListener("click",()=>{a=parseInt(t.dataset.index),p()}),t.addEventListener("mouseenter",()=>{t.style.borderColor="#4a90d9",t.style.transform="scale(1.02)"}),t.addEventListener("mouseleave",()=>{t.style.borderColor="transparent",t.style.transform="scale(1)"})})}function p(){const e=r[a];n.innerHTML=`
+    `,o.querySelectorAll(".gallery-thumb").forEach(t=>{t.addEventListener("click",()=>{r=parseInt(t.dataset.index),p()}),t.addEventListener("mouseenter",()=>{t.style.borderColor="#4a90d9",t.style.transform="scale(1.02)"}),t.addEventListener("mouseleave",()=>{t.style.borderColor="transparent",t.style.transform="scale(1)"})})}function p(){typeof o._cleanupKeyboard=="function"&&(o._cleanupKeyboard(),o._cleanupKeyboard=null);const e=i[r];o.innerHTML=`
       <div class="lightbox" style="
         display: flex;
         flex-direction: column;
@@ -114,7 +114,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
             cursor: pointer;
             font-size: 12px;
           ">← Back to Grid</button>
-          <span style="color: #888; font-size: 12px;">${a+1} / ${r.length}</span>
+          <span style="color: #888; font-size: 12px;">${r+1} / ${i.length}</span>
           <span style="color: #666; font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${(e==null?void 0:e.name)||""}</span>
           ${e!=null&&e.link?`<a href="${e.link}" target="_blank" rel="noopener noreferrer" style="color:#4a90d9;font-size:12px;text-decoration:none;">Open on YouTube ↗</a>`:""}
         </div>
@@ -128,7 +128,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
           position: relative;
           overflow: hidden;
         ">
-          ${a>0?`
+          ${r>0?`
             <button class="nav-prev" style="
               position: absolute;
               left: 12px;
@@ -163,7 +163,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
                   object-fit: contain;
                 "/>`}
           
-          ${a<r.length-1?`
+          ${r<i.length-1?`
             <button class="nav-next" style="
               position: absolute;
               right: 12px;
@@ -182,7 +182,7 @@ import{m as $,a as u}from"./index-B_DeCNZF.js";function E({title:v,imagePath:c,p
           `:""}
         </div>
       </div>
-    `,n.querySelector(".back-to-grid").addEventListener("click",g);const i=n.querySelector(".nav-prev"),t=n.querySelector(".nav-next");i&&i.addEventListener("click",()=>{a--,p()}),t&&t.addEventListener("click",()=>{a++,p()});const d=o=>{o.key==="ArrowLeft"&&a>0?(a--,p()):o.key==="ArrowRight"&&a<r.length-1?(a++,p()):o.key==="Escape"&&g()};document.addEventListener("keydown",d),n._cleanupKeyboard=()=>{document.removeEventListener("keydown",d)}}async function b(){m();const e=c.split("/").filter(Boolean).pop(),i=u("images-manifest.json"),t=u(c.startsWith("/")?c.slice(1):c),d=o=>o.map(s=>({type:s.match(/\.(mp4|webm)$/i)?"video":"image",name:s,src:`${t}/${s}`,link:f[s]}));try{const o=await fetch(i);if(o.ok){const y=(await o.json())[e]||[];r=d(y)}}catch(o){console.log("Gallery: Could not load manifest",o)}if(!r.length)try{const o=await fetch(`/api/gallery/${e}`);if(o.ok){const s=await o.json(),y=s.images||[],w=s.videos||[];r=[...y.map(l=>({type:"image",name:l,src:`${t}/${l}`,link:f[l]})),...w.map(l=>({type:"video",name:l,src:`${t}/${l}`,link:f[l]}))]}}catch(o){console.log("Gallery: Could not load images from API",o)}g()}return b(),$({title:v,body:n,width:650,height:500,icon:`<svg viewBox="0 0 32 32" class="w-8 h-8">
+    `,o.querySelector(".back-to-grid").addEventListener("click",()=>{typeof o._cleanupKeyboard=="function"&&(o._cleanupKeyboard(),o._cleanupKeyboard=null),y()});const a=o.querySelector(".nav-prev"),t=o.querySelector(".nav-next");a&&a.addEventListener("click",()=>{r--,p()}),t&&t.addEventListener("click",()=>{r++,p()});const d=n=>{n.key==="ArrowLeft"&&r>0?(r--,p()):n.key==="ArrowRight"&&r<i.length-1?(r++,p()):n.key==="Escape"&&y()};document.addEventListener("keydown",d),o._cleanupKeyboard=()=>{document.removeEventListener("keydown",d)}}async function h(){b();const e=c.split("/").filter(Boolean).pop(),a=u("images-manifest.json"),t=u(c.startsWith("/")?c.slice(1):c),d=n=>n.map(s=>({type:s.match(/\.(mp4|webm)$/i)?"video":"image",name:s,src:`${t}/${s}`,link:f[s]}));try{const n=await fetch(a);if(n.ok){const g=(await n.json())[e]||[];i=d(g)}}catch(n){console.log("Gallery: Could not load manifest",n)}if(!i.length)try{const n=await fetch(`/api/gallery/${e}`);if(n.ok){const s=await n.json(),g=s.images||[],w=s.videos||[];i=[...g.map(l=>({type:"image",name:l,src:`${t}/${l}`,link:f[l]})),...w.map(l=>({type:"video",name:l,src:`${t}/${l}`,link:f[l]}))]}}catch(n){console.log("Gallery: Could not load images from API",n)}y()}return h(),$({title:v,body:o,width:650,height:500,icon:`<svg viewBox="0 0 32 32" class="w-8 h-8">
     <rect x="2" y="4" width="28" height="24" rx="2" fill="#5090c0" stroke="#2d6090" stroke-width="1"/>
     <circle cx="10" cy="12" r="3" fill="#ffd93d"/>
     <path d="M4 24l8-8 4 4 8-10 4 6v8H4z" fill="#4ade80"/>
